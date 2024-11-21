@@ -23,7 +23,7 @@ export default function StorooLandingPage() {
           <nav className="hidden md:flex space-x-6">
             <a href="#" className="text-gray-600 hover:text-[#1a73e8]">Home</a>
             <a href="#how-it-works" className="text-gray-600 hover:text-[#1a73e8]">How It Works</a>
-            <a href="#" className="text-gray-600 hover:text-[#1a73e8]">Locations</a>
+            <a href="/locations" className="text-gray-600 hover:text-[#1a73e8]">Locations</a>
             <a href="#" className="text-gray-600 hover:text-[#1a73e8]">Contact</a>
           </nav>
           <button className="md:hidden">
