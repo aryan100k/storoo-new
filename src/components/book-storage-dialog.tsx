@@ -17,7 +17,7 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3001/api/locations/book", {
+      const response = await fetch("/api/booking/book", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
