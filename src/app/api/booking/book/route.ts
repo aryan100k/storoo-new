@@ -2,6 +2,8 @@ import { supabase } from "@/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 interface BookingRequest {
+  fullName: string;
+  phoneNumber: string;
   luggageType: string;
   duration: string;
 }
@@ -13,7 +15,7 @@ interface ServerError {
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
-    const { luggageType, duration } = body as BookingRequest;
+    const { fullName, phoneNumber, luggageType, duration } = body as BookingRequest;
 
     if (!luggageType || !duration) {
       return NextResponse.json(
@@ -27,9 +29,9 @@ export const POST = async (req: NextRequest) => {
       .from("users")
       .insert([
         {
-          name: "Test User",
+          name: fullName,
           email: `user_${Date.now()}@example.com`, // Unique email
-          phone: "+91" + Math.floor(Math.random() * 9000000000 + 1000000000), // Random phone number
+          phone: phoneNumber, // Random phone number
         },
       ])
       .select()

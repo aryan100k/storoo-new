@@ -23,8 +23,7 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          luggageType: formData.luggageType,
-          duration: formData.duration,
+          ...formData,
         }),
       });
 
