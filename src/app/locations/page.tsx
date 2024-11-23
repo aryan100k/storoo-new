@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
 import { BookNowDialog } from "@/components/book-storage-dialog";
+import { GoogleMap } from "@/components/google-map";
 
 const storageLocations = [
   {
@@ -28,57 +28,42 @@ const storageLocations = [
   },
 ];
 
+const mapContainerStyle = {
+  width: "100%",
+  height: "600px",
+};
+
+const center = {
+  lat: 17.385,
+  lng: 78.4867,
+};
+
 const LocationsPage = () => {
   const [selectedLocation, setSelectedLocation] = useState<
     (typeof storageLocations)[number] | null
   >(null);
-
-  const mapContainerStyle = {
-    width: "100%",
-    height: "600px",
-  };
-
-  const center = {
-    lat: 17.385,
-    lng: 78.4867,
-  };
 
   return (
     <div className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Storage Locations</h1>
 
-        <LoadScript googleMapsApiKey="AIzaSyBeF1EYSyAnhPTbycagaYmDM6nla5MYLd4">
-          <GoogleMap mapContainerStyle={mapContainerStyle} zoom={13} center={center}>
-            {storageLocations.map((location) => (
-              <Marker
-                key={location.id}
-                position={location.position}
-                onClick={() => setSelectedLocation(location)}
-              />
-            ))}
-
-            {selectedLocation && (
-              <InfoWindow
-                position={(selectedLocation as (typeof storageLocations)[0]).position}
-                onCloseClick={() => setSelectedLocation(null)}
-              >
-                <div className="p-2">
-                  <h3 className="font-bold">
-                    {(selectedLocation as (typeof storageLocations)[0]).name}
-                  </h3>
-                  <p className="text-sm">
-                    {(selectedLocation as (typeof storageLocations)[0]).address}
-                  </p>
-                  <p className="text-sm font-semibold mt-1">
-                    {(selectedLocation as (typeof storageLocations)[0]).price}
-                  </p>
-                  <BookNowDialog />
-                </div>
-              </InfoWindow>
-            )}
-          </GoogleMap>
-        </LoadScript>
+        <GoogleMap
+          center={center}
+          mapContainerStyle={mapContainerStyle}
+          positions={storageLocations}
+          selectedLocation={selectedLocation}
+          setSelectedLocation={(l) =>
+            setSelectedLocation(l ? storageLocations.find((loc) => loc.id === l.id)! : null)
+          }
+        >
+          <div className="p-2">
+            <h3 className="font-bold">{selectedLocation?.name}</h3>
+            <p className="text-sm">{selectedLocation?.address}</p>
+            <p className="text-sm font-semibold mt-1">{selectedLocation?.price}</p>
+            <BookNowDialog />
+          </div>
+        </GoogleMap>
 
         {/* Location List */}
         <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
