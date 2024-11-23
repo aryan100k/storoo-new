@@ -4,6 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 export const BookNowDialog = (props: React.PropsWithChildren) => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
@@ -53,6 +54,9 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
       <DialogContent className="!bg-white">
         <DialogHeader className="!bg-white">
           <DialogTitle className="text-black">Storoo</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            Book your luggage storage
+          </DialogDescription>
         </DialogHeader>
         {!isFormSubmitted ? (
           <form onSubmit={handleFormSubmit} className="space-y-4 !bg-white w-full">
