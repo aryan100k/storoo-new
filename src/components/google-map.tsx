@@ -1,5 +1,6 @@
 import { CSSProperties, PropsWithChildren } from "react";
 import { useJsApiLoader, GoogleMap as Map, InfoWindow, Marker } from "@react-google-maps/api";
+import { Skeleton } from "./ui/skeleton";
 
 const GOOGLE_MAP_API_KEY = "AIzaSyBeF1EYSyAnhPTbycagaYmDM6nla5MYLd4";
 
@@ -21,7 +22,7 @@ export const GoogleMap = (
   });
 
   if (!isLoaded) {
-    return <></>;
+    return <Skeleton style={props.mapContainerStyle} />;
   }
 
   return (
