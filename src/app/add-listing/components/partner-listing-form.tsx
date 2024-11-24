@@ -189,7 +189,7 @@ export const PartnerListingForm = () => {
                     alt="Regular capacity"
                     className="md:w-8 w-6"
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col text-primary">
                     <span className="text-sm font-medium">Regular</span>
                     <span className="text-sm text-muted-foreground">Suitcases, backpacks</span>
                   </div>
@@ -215,7 +215,7 @@ export const PartnerListingForm = () => {
                     alt="Odd sized capacity"
                     className="md:w-8 w-6"
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col text-primary">
                     <span className="text-sm font-medium">Odd-sized</span>
                     <span className="text-sm text-muted-foreground">
                       Surfboards, bikes, golf bags
