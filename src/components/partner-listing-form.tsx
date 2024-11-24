@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "@/hooks/use-toast";
@@ -37,9 +38,16 @@ import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components//ui/scroll-area";
 import { CapacityInput } from "./capacity-input";
 import { capacityOddSizeImg, capacityRegularImg, capacitySmallImg } from "@/assets/images/capacity";
+import { routes } from "@/lib/routes";
 
 export const PartnerListingForm = () => {
+  const router = useRouter();
   const { mutate, status } = trpc.addListing.useMutation({
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        router.replace(routes.partnerThankYou);
+      }
+    },
     onError: (error) => {
       console.error(error);
       toast({
