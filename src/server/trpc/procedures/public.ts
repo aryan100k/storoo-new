@@ -10,6 +10,13 @@ export const publicRouter = router({
   getAvailableListings: procedure.query(async () => {
     const listings = await getAvailableListings();
 
+    const spaceTypeMap: Record<string, string> = {
+      retail: "Retail Store",
+      hotel: "Hotel Lobby",
+      cafe: "Cafe",
+      other: "Other",
+    };
+
     return listings.map((listing) => ({
       id: listing.id,
       businessName: listing.businessName,
@@ -19,6 +26,7 @@ export const publicRouter = router({
       city: listing.city,
       latitude: listing.latitude,
       longitude: listing.longitude,
+      spaceType: spaceTypeMap[listing.spaceType] || listing.spaceType,
     }));
   }),
   addListing: procedure.input(listingSchema).mutation(async ({ input }) => {

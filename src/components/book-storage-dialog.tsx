@@ -51,7 +51,11 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {props.children || <Button className="mt-2 bg-blue-500 text-white">Book Now</Button>}
+        {props.children || (
+          <Button type="button" className="w-full mt-2 bg-blue-500 text-white">
+            Book Now
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="!bg-white">
         <DialogHeader className="!bg-white">

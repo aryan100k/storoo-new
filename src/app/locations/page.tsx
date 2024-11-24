@@ -8,7 +8,8 @@ import { Loader2 } from "lucide-react";
 
 const mapContainerStyle = {
   width: "100%",
-  height: "600px",
+  borderRadius: "0.5rem",
+  height: "calc(100vh - 6rem)",
 };
 
 const LocationsPage = () => {
@@ -37,9 +38,28 @@ const LocationsPage = () => {
   }
 
   return (
-    <main className="min-h-screen">
-      <div className="container mx-auto px-4 py-4">
-        <h1 className="text-xl font-medium mb-2">Storage Locations</h1>
+    <main className="container min-h-screen">
+      <div className="mx-auto py-4 flex flex-col-reverse md:flex-row gap-4">
+        {/* Location List */}
+        <div className="flex flex-col w-96 gap-2">
+          {data.map((location) => (
+            <div
+              key={location.id}
+              className="bg-white p-6 rounded-md hover:shadow-sm border transition-shadow cursor-pointer capitalize"
+              onClick={() => setSelectedLocationId(location.id)}
+            >
+              <span className="text-sm">{location.spaceType}</span>
+              <h3 className="font-medium">{location.businessName}</h3>
+              <p className="text-gray-600 text-sm">
+                {location.locality}, {location.city}
+              </p>
+
+              <p className="font-semibold text-blue-600 mt-2">₹{location.rent}/day</p>
+
+              <BookNowDialog />
+            </div>
+          ))}
+        </div>
 
         <GoogleMap
           center={center}
@@ -69,25 +89,6 @@ const LocationsPage = () => {
             <BookNowDialog />
           </div>
         </GoogleMap>
-
-        {/* Location List */}
-        <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {data.map((location) => (
-            <div
-              key={location.id}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-lg border transition-shadow cursor-pointer"
-              onClick={() => setSelectedLocationId(location.id)}
-            >
-              <h3 className="font-bold text-lg">{location.businessName}</h3>
-              <p className="text-gray-600">
-                {location.locality}, {location.city}
-              </p>
-              <p className="font-semibold text-blue-600 mt-2">₹{location.rent}/day</p>
-
-              <BookNowDialog />
-            </div>
-          ))}
-        </div>
       </div>
     </main>
   );
