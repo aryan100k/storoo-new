@@ -3,15 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { BookNowDialog } from "@/components/book-storage-dialog";
 import { MapPin, Clock, Shield, Phone, CreditCard, ThumbsUp } from "lucide-react";
-import { Navbar } from "./components/navbar";
+import Link from "next/link";
+import { routes } from "@/lib/routes";
 
 export default function StorooLandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-white shadow-sm">
-        <Navbar />
-      </header>
-
+    <>
       <main className="flex-grow">
         <section className="bg-[#e8f0fe] py-20">
           <div className="container mx-auto px-4 text-center">
@@ -23,15 +20,16 @@ export default function StorooLandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
               <BookNowDialog>
-                <Button className="bg-[#1a73e8] hover:bg-[#1a73e8]/90 text-white px-8 py-3 rounded-full text-lg">
+                <Button className="bg-brand hover:bg-brand/90 text-white px-8 py-3 rounded-full text-lg">
                   Find Storage Space
                 </Button>
               </BookNowDialog>
               <Button
+                asChild
                 variant="outline"
-                className="border-[#1a73e8] text-[#1a73e8] hover:bg-[#1a73e8] hover:text-white px-8 py-3 rounded-full text-lg"
+                className="border-brand text-brand hover:bg-brand hover:text-white px-8 py-3 rounded-full text-lg"
               >
-                List Your Space
+                <Link href={routes.addListing}>List Your Space</Link>
               </Button>
             </div>
           </div>
@@ -60,7 +58,7 @@ export default function StorooLandingPage() {
               ].map((step, index) => (
                 <div key={index} className="text-center">
                   <div className="bg-[#e8f0fe] rounded-full p-6 inline-block mb-4">
-                    <step.icon className="w-12 h-12 text-[#1a73e8]" />
+                    <step.icon className="w-12 h-12 text-brand" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
                   <p className="text-gray-600">{step.description}</p>
@@ -81,7 +79,7 @@ export default function StorooLandingPage() {
                 { icon: CreditCard, title: "Flexible cancellation" },
               ].map((feature, index) => (
                 <div key={index} className="bg-white rounded-lg p-6 text-center shadow-md">
-                  <div className="bg-[#1a73e8] rounded-full p-4 inline-block mb-4">
+                  <div className="bg-brand rounded-full p-4 inline-block mb-4">
                     <feature.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-lg font-semibold">{feature.title}</h3>
@@ -95,7 +93,7 @@ export default function StorooLandingPage() {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold mb-12 text-center">Pricing</h2>
             <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="bg-[#1a73e8] text-white p-6 text-center">
+              <div className="bg-brand text-white p-6 text-center">
                 <h3 className="text-2xl font-semibold mb-2">Simple, Transparent Pricing</h3>
                 <p className="text-4xl font-bold">
                   ₹399<span className="text-xl">/day</span>
@@ -253,6 +251,6 @@ export default function StorooLandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

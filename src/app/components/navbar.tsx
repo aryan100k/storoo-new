@@ -32,13 +32,13 @@ const links = [
 
 export const Navbar = () => {
   return (
-    <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="#" className="text-2xl font-bold text-[#1a73e8]">
+    <div className="container mx-auto py-4 flex justify-between items-center">
+      <Link href="/" className="text-2xl font-bold text-brand">
         Storoo
-      </a>
+      </Link>
       <nav className="hidden md:flex space-x-6">
         {links.map((link) => (
-          <Link key={link.title} href={link.href} className="text-gray-600 hover:text-[#1a73e8]">
+          <Link key={link.title} href={link.href} className="text-gray-600 hover:text-brand">
             {link.title}
           </Link>
         ))}
@@ -65,7 +65,7 @@ export const Navbar = () => {
           ))}
 
           <BookNowDialog>
-            <button className="mt-auto w-full px-4 py-2 bg-[#1a73e8] text-white rounded-md">
+            <button className="mt-auto w-full px-4 py-2 bg-brand text-white rounded-md">
               Find Storage
             </button>
           </BookNowDialog>

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { GlobalScript } from "./components/global-script";
+import { Navbar } from "./components/navbar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +16,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <GlobalScript />
       </head>
-      <body>{children}</body>
+
+      <body className="bg-background font-sans text-primary antialiased">
+        <header className="bg-white shadow-sm sticky top-0">
+          <Navbar />
+        </header>
+
+        {children}
+      </body>
     </html>
   );
 }
