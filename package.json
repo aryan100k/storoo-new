@@ -35,10 +35,12 @@
     "pg": "^8.13.1",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react-google-autocomplete": "^2.7.3",
     "react-hook-form": "^7.53.2",
     "shadcn-ui": "^0.9.3",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

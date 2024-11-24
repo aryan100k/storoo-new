@@ -35,10 +35,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { ScrollArea } from "@/components//ui/scroll-area";
-import { CapacityInput } from "./capacity-input";
+import { CapacityInput } from "../../../components/capacity-input";
+import { TermsAndConditions } from "./tnc";
+
 import { capacityOddSizeImg, capacityRegularImg, capacitySmallImg } from "@/assets/images/capacity";
 import { routes } from "@/lib/routes";
+import { AddressSection } from "./address-section";
 
 export const PartnerListingForm = () => {
   const router = useRouter();
@@ -115,33 +117,7 @@ export const PartnerListingForm = () => {
             {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
           </div>
 
-          <div>
-            <Label htmlFor="locality">Street Address</Label>
-            <Input id="locality" placeholder="123 Main St" {...register("locality")} />
-            {errors.locality && (
-              <p className="text-red-500 text-sm mt-1">{errors.locality.message}</p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="city">City</Label>
-              <Input id="city" placeholder="City" {...register("city")} />
-              {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="state">State</Label>
-              <Input id="state" placeholder="State" {...register("state")} />
-              {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="postalCode">Postal Code</Label>
-              <Input id="postalCode" placeholder="12345" {...register("postalCode")} />
-              {errors.postalCode && (
-                <p className="text-red-500 text-sm mt-1">{errors.postalCode.message}</p>
-              )}
-            </div>
-          </div>
+          <AddressSection />
 
           <div>
             <Label htmlFor="spaceType">Type of Space</Label>
@@ -369,52 +345,3 @@ export const PartnerListingForm = () => {
     </Form>
   );
 };
-
-const TermsAndConditions = () => (
-  <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold">Terms and Conditions for Storoo Partners</h2>
-      <p>Effective Date: November 24, 2024</p>
-      <section>
-        <h3 className="text-xl font-semibold">1. Introduction</h3>
-        <p>
-          By submitting an application to list your storage space on Storoo, you agree to comply
-          with and be bound by these terms.
-        </p>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">2. Eligibility</h3>
-        <p>
-          To be eligible, you must be at least 18 years old and have the legal right to list the
-          storage space.
-        </p>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">3. Listing Responsibilities</h3>
-        <p>
-          You are responsible for providing accurate information about your space and keeping it
-          up-to-date.
-        </p>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">4. Fees and Payments</h3>
-        <p>
-          Storoo may charge a service fee for each booking. You are responsible for setting your own
-          prices.
-        </p>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">5. User Interaction</h3>
-        <p>You are responsible for managing interactions with users and resolving disputes.</p>
-      </section>
-      <section>
-        <h3 className="text-xl font-semibold">6. Termination</h3>
-        <p>
-          Storoo reserves the right to terminate your partnership at any time for violations of
-          these terms.
-        </p>
-      </section>
-      <p>By accepting these terms, you agree to all conditions set forth in this agreement.</p>
-    </div>
-  </ScrollArea>
-);
