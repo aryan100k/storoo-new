@@ -57,3 +57,11 @@ export const addListingRequest = async (listing: ListingSchema) => {
     storageId: storageId[0].insertedId,
   };
 };
+
+export const getAvailableListings = async () => {
+  return db.query.storageDetailsTable.findMany({
+    with: {
+      capacity: true,
+    },
+  });
+};

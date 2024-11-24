@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-background font-sans text-primary antialiased">
         <TRPCProvider>
           <NextTopLoader showSpinner={false} />
-          <header className="bg-white shadow-sm sticky top-0">
+          <header className="bg-white shadow-sm sticky top-0 z-10 isolate">
             <Navbar />
           </header>
 

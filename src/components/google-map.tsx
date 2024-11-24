@@ -1,8 +1,7 @@
 import { CSSProperties, PropsWithChildren } from "react";
 import { useJsApiLoader, GoogleMap as Map, InfoWindow, Marker } from "@react-google-maps/api";
 import { Skeleton } from "./ui/skeleton";
-
-const GOOGLE_MAP_API_KEY = "AIzaSyBeF1EYSyAnhPTbycagaYmDM6nla5MYLd4";
+import { googleMapAPIKey } from "@/lib/constants";
 
 type LatLong = google.maps.LatLng | google.maps.LatLngLiteral;
 type Location = { id: number; position: LatLong };
@@ -10,7 +9,7 @@ type Location = { id: number; position: LatLong };
 export const GoogleMap = (
   props: PropsWithChildren<{
     positions: Location[];
-    selectedLocation: Location | null;
+    selectedPosition: LatLong | null;
     setSelectedLocation: (location: Location | null) => void;
     center: LatLong;
     mapContainerStyle: CSSProperties;
@@ -18,7 +17,7 @@ export const GoogleMap = (
 ) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: GOOGLE_MAP_API_KEY,
+    googleMapsApiKey: googleMapAPIKey!,
   });
 
   if (!isLoaded) {
@@ -35,9 +34,9 @@ export const GoogleMap = (
         />
       ))}
 
-      {props.children && props.selectedLocation && (
+      {props.children && props.selectedPosition && (
         <InfoWindow
-          position={props.selectedLocation.position}
+          position={props.selectedPosition}
           onCloseClick={() => props.setSelectedLocation(null)}
         >
           {props.children}
