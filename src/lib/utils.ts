@@ -6,3 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const isProd = () => process.env.NODE_ENV === "production";
+
+export const truncateText = (text: string, length: number) => {
+  return text.length > length ? text.slice(0, length) + "..." : text;
+};

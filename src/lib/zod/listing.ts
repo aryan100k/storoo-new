@@ -9,6 +9,7 @@ export const listingSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   postalCode: z.string().min(5, "Postal code must be at least 5 characters"),
+  placeId: z.string().min(5, "Place ID is required"),
   spaceType: z.string().min(1, "Space type is required"),
   storageCapacity: z.object({
     small: z.coerce.number().optional().default(0),
