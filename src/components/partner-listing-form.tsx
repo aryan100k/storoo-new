@@ -21,6 +21,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
 import { CapacityInput } from "./capacity-input";
+import Image from "next/image";
+import { capacityOddSizeImg, capacityRegularImg, capacitySmallImg } from "@/assets/images/capacity";
 
 const formSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
@@ -205,9 +207,12 @@ export const PartnerListingForm = () => {
             name="storageCapacity.small"
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
-                <FormLabel className="flex flex-col font-normal">
-                  <span className="text-sm font-medium">Small</span>
-                  <span className="text-sm text-muted-foreground">Purses, tote bag</span>
+                <FormLabel className="flex gap-4 font-normal">
+                  <Image {...capacitySmallImg} alt="Small capacity" className="md:w-8 w-6" />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">Small</span>
+                    <span className="text-sm text-muted-foreground">Purses, tote bag</span>
+                  </div>
                 </FormLabel>
                 <FormControl>
                   <CapacityInput value={field.value} setValue={field.onChange} />
@@ -222,9 +227,12 @@ export const PartnerListingForm = () => {
             name="storageCapacity.regular"
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
-                <FormLabel className="flex flex-col font-normal">
-                  <span className="text-sm font-medium">Regular</span>
-                  <span className="text-sm text-muted-foreground">Suitcases, backpacks</span>
+                <FormLabel className="flex gap-4 font-normal">
+                  <Image {...capacityRegularImg} alt="Regular capacity" className="md:w-8 w-6" />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">Regular</span>
+                    <span className="text-sm text-muted-foreground">Suitcases, backpacks</span>
+                  </div>
                 </FormLabel>
                 <FormControl>
                   <CapacityInput value={field.value} setValue={field.onChange} />
@@ -239,11 +247,14 @@ export const PartnerListingForm = () => {
             name="storageCapacity.oddSided"
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
-                <FormLabel className="flex flex-col font-normal">
-                  <span className="text-sm font-medium">Odd-sized</span>
-                  <span className="text-sm text-muted-foreground">
-                    Surfboards, bikes, golf bags
-                  </span>
+                <FormLabel className="flex gap-4 font-normal">
+                  <Image {...capacityOddSizeImg} alt="Odd sized capacity" className="md:w-8 w-6" />
+                  <div className="flex flex-col">
+                    <span className="text-sm font-medium">Odd-sized</span>
+                    <span className="text-sm text-muted-foreground">
+                      Surfboards, bikes, golf bags
+                    </span>
+                  </div>
                 </FormLabel>
                 <FormControl>
                   <CapacityInput value={field.value} setValue={field.onChange} />

@@ -1,33 +1,5 @@
-import {
-  pgTable,
-  unique,
-  uuid,
-  text,
-  timestamp,
-  foreignKey,
-  numeric,
-  integer,
-  type AnyPgColumn,
-  serial,
-  primaryKey,
-} from "drizzle-orm/pg-core";
-import { relations, sql } from "drizzle-orm";
-
-export const storageLocations = pgTable("storage_locations", {
-  id: uuid()
-    .default(sql`uuid_generate_v4()`)
-    .primaryKey()
-    .notNull(),
-  name: text(),
-  address: text(),
-  lat: numeric(),
-  lng: numeric(),
-  pricePerDay: numeric("price_per_day"),
-  availableSpaces: integer("available_spaces"),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
-    sql`timezone('utc'::text, now())`
-  ),
-});
+import { pgTable, text, timestamp, numeric, integer, serial } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const storageDetails = pgTable("storage_details", {
   id: serial().primaryKey().notNull(),
@@ -60,11 +32,7 @@ export const capacity = pgTable("capacity", {
   small: integer().default(0).notNull(),
   regular: integer().default(0).notNull(),
   oddSize: integer("odd_size").default(0).notNull(),
-  storageId: integer("storage_id")
-    .notNull()
-    .references(() => storageDetails.id, {
-      onDelete: "cascade",
-    }),
+  storageId: integer("storage_id").notNull(),
 });
 
 export const storageDetailsRelations = relations(storageDetails, ({ one, many }) => ({
