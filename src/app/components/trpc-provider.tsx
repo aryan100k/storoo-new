@@ -1,8 +1,8 @@
 "use client";
 
-import { getTRPCBaseUrl, trpc } from "@/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
+import { getTRPCBaseUrl, trpc } from "@/trpc";
 
 export const queryClient = new QueryClient();
 export const trpcClient = trpc.createClient({

@@ -1,23 +1,17 @@
 {
-  "id": "0a402435-f119-48d8-9ea5-a3774091149a",
-  "prevId": "4dc10378-3d5b-483a-a537-607dc4e8c0f3",
+  "id": "c1ba073a-3066-4973-9035-f80111db927e",
+  "prevId": "fc2b5784-15af-4247-bffa-3f2132961bd2",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.capacity": {
-      "name": "capacity",
+    "public.storage_capacity": {
+      "name": "storage_capacity",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "serial",
           "primaryKey": true,
-          "notNull": true
-        },
-        "storage_id": {
-          "name": "storage_id",
-          "type": "integer",
-          "primaryKey": false,
           "notNull": true
         },
         "small": {
@@ -43,21 +37,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "capacity_storage_id_storage_details_id_fk": {
-          "name": "capacity_storage_id_storage_details_id_fk",
-          "tableFrom": "capacity",
-          "tableTo": "storage_details",
-          "columnsFrom": [
-            "storage_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -142,7 +122,7 @@
         },
         "rent": {
           "name": "rent",
-          "type": "numeric",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -156,11 +136,11 @@
           "name": "amenities",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "terms_agreed": {
           "name": "terms_agreed",
-          "type": "text",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },
@@ -168,7 +148,7 @@
           "name": "additional_note",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "referral_source": {
           "name": "referral_source",
@@ -182,20 +162,33 @@
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
+        },
+        "approvalStatus": {
+          "name": "approvalStatus",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
         }
       },
       "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "storage_details_email_unique": {
-          "name": "storage_details_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+      "foreignKeys": {
+        "storage_details_capacity_id_storage_capacity_id_fk": {
+          "name": "storage_details_capacity_id_storage_capacity_id_fk",
+          "tableFrom": "storage_details",
+          "tableTo": "storage_capacity",
+          "columnsFrom": [
+            "capacity_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

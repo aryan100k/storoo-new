@@ -1,12 +1,12 @@
-import { pgTable, text, timestamp, numeric, integer, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, serial, boolean } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
-export const storageDetails = pgTable("storage_details", {
+export const storageDetailsTable = pgTable("storage_details", {
   id: serial().primaryKey().notNull(),
   businessName: text("business_name").notNull(),
   contactName: text("contact_name").notNull(),
-  email: text().notNull().unique(),
-  phone: text().notNull().unique(),
+  email: text().notNull(),
+  phone: text().notNull(),
   state: text().notNull(),
   city: text().notNull(),
   locality: text().notNull(),
@@ -14,45 +14,44 @@ export const storageDetails = pgTable("storage_details", {
   spaceType: text("space_type").notNull(),
   capacityId: integer("capacity_id")
     .notNull()
-    .references(() => capacity.id, {
+    .references(() => capacityTable.id, {
       onDelete: "cascade",
     }),
   operatingHours: text("operating_hours").notNull(),
-  rent: numeric().notNull(),
+  rent: integer().notNull(),
   securityFeatures: text("security_features").notNull(),
-  amenities: text().notNull(),
-  termsAgreed: text("terms_agreed").notNull(),
-  additionalNote: text("additional_note").notNull(),
+  amenities: text(),
+  termsAgreed: boolean("terms_agreed").notNull(),
+  additionalNote: text("additional_note"),
   referralSource: text("referral_source").notNull(),
   createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  approvalStatus: text({ enum: ["pending", "approved", "rejected"] })
+    .default("pending")
+    .notNull(),
 });
 
-export const capacity = pgTable("capacity", {
+export const capacityTable = pgTable("storage_capacity", {
   id: serial().primaryKey().notNull(),
   small: integer().default(0).notNull(),
   regular: integer().default(0).notNull(),
   oddSize: integer("odd_size").default(0).notNull(),
-  storageId: integer("storage_id").notNull(),
 });
 
-export const storageDetailsRelations = relations(storageDetails, ({ one, many }) => ({
-  capacity: one(capacity, {
-    fields: [storageDetails.capacityId],
-    references: [capacity.id],
+export const storageDetailsRelations = relations(storageDetailsTable, ({ one, many }) => ({
+  capacity: one(capacityTable, {
+    fields: [storageDetailsTable.capacityId],
+    references: [capacityTable.id],
     relationName: "storageDetails_capacityId_capacity_id",
   }),
-  capacities: many(capacity, {
+  capacities: many(capacityTable, {
     relationName: "capacity_storageId_storageDetails_id",
   }),
 }));
 
-export const capacityRelations = relations(capacity, ({ one, many }) => ({
-  storageDetails: many(storageDetails, {
+export const capacityRelations = relations(capacityTable, ({ one, many }) => ({
+  storageDetails: many(storageDetailsTable, {
     relationName: "storageDetails_capacityId_capacity_id",
   }),
-  storageDetail: one(storageDetails, {
-    fields: [capacity.storageId],
-    references: [storageDetails.id],
-    relationName: "capacity_storageId_storageDetails_id",
-  }),
 }));
+
+export type StorageDetails = typeof storageDetailsTable.$inferInsert;

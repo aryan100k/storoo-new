@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import { trpc } from "@/lib/trpc";
+import { ListingSchema, listingSchema } from "@/lib/zod/listing";
+
 import {
   Select,
   SelectContent,
@@ -14,60 +14,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/hooks/use-toast";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "@/components//ui/scroll-area";
 import { CapacityInput } from "./capacity-input";
-import Image from "next/image";
 import { capacityOddSizeImg, capacityRegularImg, capacitySmallImg } from "@/assets/images/capacity";
-import { trpc } from "@/lib/trpc";
-
-const formSchema = z.object({
-  businessName: z.string().min(1, "Business name is required"),
-  contactName: z.string().min(1, "Contact name is required"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  locality: z.string().min(1, "Street address is required"),
-  city: z.string().min(1, "City is required"),
-  state: z.string().min(1, "State is required"),
-  postalCode: z.string().min(5, "Postal code must be at least 5 characters"),
-  spaceType: z.string().min(1, "Space type is required"),
-  storageCapacity: z.object({
-    small: z.coerce.number().optional().default(0),
-    regular: z.coerce.number().optional().default(0),
-    oddSided: z.coerce.number().optional().default(0),
-  }),
-  operatingHours: z.string().min(1, "Operating hours are required"),
-  securityFeatures: z.string().min(1, "Security features are required"),
-  rent: z.number().min(1, "Rent amount is required"),
-  amenities: z.string().optional(),
-  termsAgreed: z
-    .boolean()
-    .refine((val) => val === true, "You must agree to the terms and conditions"),
-  additionalNotes: z.string().optional(),
-  referralSource: z.string().min(1, "Referral source is required"),
-});
-
-type FormData = z.infer<typeof formSchema>;
-
-const mockSubmitForm = async (data: FormData): Promise<{ success: boolean; message: string }> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  console.log("Form submitted:", data);
-  return { success: true, message: "Form submitted successfully" };
-};
-
-const mockSendEmail = async (): Promise<void> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  console.log("Email notification sent to Storoo team");
-};
 
 export const PartnerListingForm = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const { mutate, status } = trpc.addListing.useMutation({
+    onError: (error) => {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const form = useForm<ListingSchema>({
+    resolver: zodResolver(listingSchema),
   });
 
   const {
@@ -77,32 +61,9 @@ export const PartnerListingForm = () => {
     formState: { errors },
   } = form;
 
-  const onSubmit = async (data: FormData) => {
-    setIsSubmitting(true);
-    try {
-      const result = await mockSubmitForm(data);
-      if (result.success) {
-        await mockSendEmail();
-        toast({
-          title: "Success!",
-          description: "Your application has been submitted. We'll be in touch soon.",
-        });
-      } else {
-        throw new Error(result.message);
-      }
-    } catch (e) {
-      console.log(e);
-      toast({
-        title: "Error",
-        description: "There was a problem submitting your application. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+  const onSubmit = async (data: ListingSchema) => {
+    mutate(data);
   };
-
-  trpc.test.useQuery();
 
   return (
     <Form {...form}>
@@ -310,8 +271,8 @@ export const PartnerListingForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="rent">Pricing Structure</Label>
-            <Input id="rent" placeholder="e.g., $5 per bag per day" {...register("rent")} />
+            <Label htmlFor="rent">Rent per day</Label>
+            <Input id="rent" placeholder="rent" type="number" {...register("rent")} />
             {errors.rent && <p className="text-red-500 text-sm mt-1">{errors.rent.message}</p>}
           </div>
 
@@ -324,40 +285,10 @@ export const PartnerListingForm = () => {
             />
           </div>
 
-          <div>
+          {/* <div>
             <Label htmlFor="photos">Photos of the Space</Label>
             <Input id="photos" type="file" multiple accept="image/*" />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="termsAgreed"
-            render={({ field }) => (
-              <FormItem className="gap-2 flex items-center space-y-0">
-                <FormControl>
-                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                </FormControl>
-                <FormLabel>
-                  I agree to the{" "}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button type="button" variant="link" className="p-0 h-auto">
-                        terms and conditions
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-3xl">
-                      <DialogHeader>
-                        <DialogTitle>Terms and Conditions</DialogTitle>
-                      </DialogHeader>
-                      <TermsAndConditions />
-                    </DialogContent>
-                  </Dialog>
-                  .
-                </FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          </div> */}
 
           <div>
             <Label htmlFor="additionalNotes">Additional Notes or Comments</Label>
@@ -391,10 +322,40 @@ export const PartnerListingForm = () => {
               <p className="text-red-500 text-sm mt-1">{errors.referralSource.message}</p>
             )}
           </div>
+
+          <FormField
+            control={form.control}
+            name="termsAgreed"
+            render={({ field }) => (
+              <FormItem className="gap-2 flex items-center space-y-0">
+                <FormControl>
+                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                </FormControl>
+                <FormLabel>
+                  I agree to the{" "}
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button type="button" variant="link" className="p-0 h-auto">
+                        terms and conditions
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-3xl">
+                      <DialogHeader>
+                        <DialogTitle>Terms and Conditions</DialogTitle>
+                      </DialogHeader>
+                      <TermsAndConditions />
+                    </DialogContent>
+                  </Dialog>
+                  .
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <Button type="submit" variant={"brand"} className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Submitting..." : "Submit Application"}
+        <Button type="submit" variant={"brand"} className="w-full" disabled={status === "pending"}>
+          {status === "pending" ? "Submitting..." : "Submit Application"}
         </Button>
       </form>
     </Form>
