@@ -17,34 +17,29 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "./ui/form";
-import Link from "next/link";
-import { routes } from "@/lib/routes";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { ScrollArea } from "./ui/scroll-area";
+import { CapacityInput } from "./capacity-input";
 
 const formSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   contactName: z.string().min(1, "Contact name is required"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  street: z.string().min(1, "Street address is required"),
+  locality: z.string().min(1, "Street address is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   postalCode: z.string().min(5, "Postal code must be at least 5 characters"),
   spaceType: z.string().min(1, "Space type is required"),
-  storageCapacity: z.string().min(1, "Storage capacity is required"),
+  storageCapacity: z.object({
+    small: z.coerce.number().optional().default(0),
+    regular: z.coerce.number().optional().default(0),
+    oddSided: z.coerce.number().optional().default(0),
+  }),
   operatingHours: z.string().min(1, "Operating hours are required"),
   securityFeatures: z.string().min(1, "Security features are required"),
-  pricingStructure: z.string().min(1, "Pricing structure is required"),
+  rent: z.number().min(1, "Rent amount is required"),
   amenities: z.string().optional(),
   termsAgreed: z
     .boolean()
@@ -147,9 +142,11 @@ export const PartnerListingForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="street">Street Address</Label>
-            <Input id="street" placeholder="123 Main St" {...register("street")} />
-            {errors.street && <p className="text-red-500 text-sm mt-1">{errors.street.message}</p>}
+            <Label htmlFor="locality">Street Address</Label>
+            <Input id="locality" placeholder="123 Main St" {...register("locality")} />
+            {errors.locality && (
+              <p className="text-red-500 text-sm mt-1">{errors.locality.message}</p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -196,17 +193,65 @@ export const PartnerListingForm = () => {
             )}
           </div>
 
-          <div>
-            <Label htmlFor="storageCapacity">Storage Capacity</Label>
-            <Input
-              id="storageCapacity"
-              placeholder="e.g., 50 bags"
-              {...register("storageCapacity")}
-            />
-            {errors.storageCapacity && (
-              <p className="text-red-500 text-sm mt-1">{errors.storageCapacity.message}</p>
-            )}
+          <div className="flex flex-col text-sm items-center">
+            <span className="font-medium">Storage Capacity</span>
+            <span className="text-muted-foreground">
+              Total number of items you can accommodate in a day
+            </span>
           </div>
+
+          <FormField
+            control={form.control}
+            name="storageCapacity.small"
+            render={({ field }) => (
+              <FormItem className="space-y-0 flex justify-between gap-2">
+                <FormLabel className="flex flex-col font-normal">
+                  <span className="text-sm font-medium">Small</span>
+                  <span className="text-sm text-muted-foreground">Purses, tote bag</span>
+                </FormLabel>
+                <FormControl>
+                  <CapacityInput value={field.value} setValue={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="storageCapacity.regular"
+            render={({ field }) => (
+              <FormItem className="space-y-0 flex justify-between gap-2">
+                <FormLabel className="flex flex-col font-normal">
+                  <span className="text-sm font-medium">Regular</span>
+                  <span className="text-sm text-muted-foreground">Suitcases, backpacks</span>
+                </FormLabel>
+                <FormControl>
+                  <CapacityInput value={field.value} setValue={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="storageCapacity.oddSided"
+            render={({ field }) => (
+              <FormItem className="space-y-0 flex justify-between gap-2">
+                <FormLabel className="flex flex-col font-normal">
+                  <span className="text-sm font-medium">Odd-sized</span>
+                  <span className="text-sm text-muted-foreground">
+                    Surfboards, bikes, golf bags
+                  </span>
+                </FormLabel>
+                <FormControl>
+                  <CapacityInput value={field.value} setValue={field.onChange} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div>
             <Label htmlFor="operatingHours">Operating Hours</Label>
@@ -233,15 +278,9 @@ export const PartnerListingForm = () => {
           </div>
 
           <div>
-            <Label htmlFor="pricingStructure">Pricing Structure</Label>
-            <Input
-              id="pricingStructure"
-              placeholder="e.g., $5 per bag per day"
-              {...register("pricingStructure")}
-            />
-            {errors.pricingStructure && (
-              <p className="text-red-500 text-sm mt-1">{errors.pricingStructure.message}</p>
-            )}
+            <Label htmlFor="rent">Pricing Structure</Label>
+            <Input id="rent" placeholder="e.g., $5 per bag per day" {...register("rent")} />
+            {errors.rent && <p className="text-red-500 text-sm mt-1">{errors.rent.message}</p>}
           </div>
 
           <div>
