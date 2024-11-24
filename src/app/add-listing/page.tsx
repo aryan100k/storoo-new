@@ -13,7 +13,6 @@ const AddListingPage = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <AutoCompleteInput />
           <PartnerListingForm />
         </CardContent>
       </Card>
