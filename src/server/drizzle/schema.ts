@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, integer, serial, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, serial, boolean, numeric } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const storageDetailsTable = pgTable("storage_details", {
@@ -12,8 +12,8 @@ export const storageDetailsTable = pgTable("storage_details", {
   locality: text().notNull(),
   postalCode: text("postal_code").notNull(),
   placeId: text("place_id").notNull().default(""),
-  latitude: integer().notNull().default(0),
-  longitude: integer().notNull().default(0),
+  latitude: numeric().notNull().default("0"),
+  longitude: numeric().notNull().default("0"),
   spaceType: text("space_type").notNull(),
   capacityId: integer("capacity_id")
     .notNull()

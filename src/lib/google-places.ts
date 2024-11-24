@@ -1,3 +1,6 @@
+import axios from "axios";
+import { googleMapAPIKey } from "@/lib/constants";
+
 export type AddressComponentTypes =
   | "subpremise"
   | "premise"
@@ -15,6 +18,22 @@ export type AddressComponentTypes =
   | "establishment"
   | "point_of_interest";
 
+type Viewport = {
+  northeast: Location;
+  southwest: Location;
+};
+
+type Location = {
+  lat: number;
+  lng: number;
+};
+
+export type Geometry = {
+  location: Location;
+  location_type: string;
+  viewport: Viewport;
+};
+
 export const getGeoDetail = (
   addressComponent: google.maps.places.PlaceResult["address_components"],
   detailType: AddressComponentTypes
@@ -28,4 +47,29 @@ export const getGeoDetail = (
   }
 
   return "";
+};
+
+export const getGeocodeFromPlaceId = async (placeId: string) => {
+  try {
+    const response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+      params: {
+        fields: "geometry",
+        place_id: placeId,
+        key: googleMapAPIKey,
+      },
+    });
+
+    console.log(
+      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${googleMapAPIKey}`
+    );
+
+    if (response.data) {
+      return response.data as { result: { geometry: Geometry } };
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error in getting geocode from placeId", error);
+    return null;
+  }
 };

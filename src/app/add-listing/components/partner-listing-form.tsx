@@ -163,7 +163,7 @@ export const PartnerListingForm = () => {
                     alt="Small capacity"
                     className="md:w-8 w-6"
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col text-primary">
                     <span className="text-sm font-medium">Small</span>
                     <span className="text-sm text-muted-foreground">Purses, tote bag</span>
                   </div>

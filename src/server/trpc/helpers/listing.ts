@@ -1,8 +1,13 @@
+import { getGeocodeFromPlaceId } from "@/lib/google-places";
 import { ListingSchema } from "@/lib/zod/listing";
 import { db } from "@/server/drizzle/db";
 import { capacityTable, StorageDetails, storageDetailsTable } from "@/server/drizzle/schema";
+import { TRPCError } from "@trpc/server";
 
 export const addListingRequest = async (listing: ListingSchema) => {
+  const geoCode = await getGeocodeFromPlaceId(listing.placeId);
+  const { lat, lng } = geoCode?.result.geometry.location || {};
+
   const capacityId = await db
     .insert(capacityTable)
     .values({
@@ -11,6 +16,13 @@ export const addListingRequest = async (listing: ListingSchema) => {
       small: listing.storageCapacity.small,
     })
     .returning({ insertedId: capacityTable.id });
+
+  if (!lat || !lng) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Invalid address",
+    });
+  }
 
   const storageDetails: StorageDetails = {
     businessName: listing.businessName,
@@ -32,8 +44,8 @@ export const addListingRequest = async (listing: ListingSchema) => {
     createdAt: new Date().toISOString(),
     capacityId: capacityId[0].insertedId,
     approvalStatus: "pending",
-    latitude: 0,
-    longitude: 0,
+    latitude: lat.toString(),
+    longitude: lng.toString(),
   };
 
   const storageId = await db

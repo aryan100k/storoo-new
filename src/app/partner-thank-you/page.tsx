@@ -36,7 +36,7 @@ const PartnerThankYouPage = () => {
             If you have any questions or need to provide additional information, please don't
             hesitate to contact us at{" "}
             <Link href="mailto:partners@storoo.com" className="text-blue-600 hover:underline">
-              contact@storoo.com
+              contact@storoo.in
             </Link>
             .
           </p>
