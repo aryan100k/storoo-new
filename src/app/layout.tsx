@@ -1,5 +1,8 @@
 import { Metadata } from "next";
+import { Navbar } from "./components/navbar";
 import { GlobalScript } from "./components/global-script";
+import { TRPCProvider } from "./components/trpc-provider";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,7 +18,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <GlobalScript />
       </head>
-      <body>{children}</body>
+
+      <body className="bg-background font-sans text-primary antialiased">
+        <TRPCProvider>
+          <header className="bg-white shadow-sm sticky top-0">
+            <Navbar />
+          </header>
+
+          {children}
+        </TRPCProvider>
+      </body>
     </html>
   );
 }

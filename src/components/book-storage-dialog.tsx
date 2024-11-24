@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -122,8 +124,8 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
             </div>
             <Button
               type="submit"
-              className="w-full border-2 border-[#1a73e8] text-[#1a73e8] bg-white 
-             hover:bg-[#1a73e8] hover:text-white hover:shadow-lg 
+              className="w-full border-2 border-brand text-brand bg-white 
+             hover:bg-brand hover:text-white hover:shadow-lg 
              transition-all duration-300 ease-in-out"
             >
               Submit
