@@ -23,6 +23,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { CapacityInput } from "./capacity-input";
 import Image from "next/image";
 import { capacityOddSizeImg, capacityRegularImg, capacitySmallImg } from "@/assets/images/capacity";
+import { trpc } from "@/lib/trpc";
 
 const formSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
@@ -100,6 +101,8 @@ export const PartnerListingForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  trpc.test.useQuery();
 
   return (
     <Form {...form}>
@@ -208,7 +211,13 @@ export const PartnerListingForm = () => {
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
                 <FormLabel className="flex gap-4 font-normal">
-                  <Image {...capacitySmallImg} alt="Small capacity" className="md:w-8 w-6" />
+                  <Image
+                    src={capacitySmallImg.src}
+                    height={capacitySmallImg.height}
+                    width={capacitySmallImg.width}
+                    alt="Small capacity"
+                    className="md:w-8 w-6"
+                  />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">Small</span>
                     <span className="text-sm text-muted-foreground">Purses, tote bag</span>
@@ -228,7 +237,13 @@ export const PartnerListingForm = () => {
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
                 <FormLabel className="flex gap-4 font-normal">
-                  <Image {...capacityRegularImg} alt="Regular capacity" className="md:w-8 w-6" />
+                  <Image
+                    src={capacityRegularImg.src}
+                    height={capacityRegularImg.height}
+                    width={capacityRegularImg.width}
+                    alt="Regular capacity"
+                    className="md:w-8 w-6"
+                  />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">Regular</span>
                     <span className="text-sm text-muted-foreground">Suitcases, backpacks</span>
@@ -248,7 +263,13 @@ export const PartnerListingForm = () => {
             render={({ field }) => (
               <FormItem className="space-y-0 flex justify-between gap-2">
                 <FormLabel className="flex gap-4 font-normal">
-                  <Image {...capacityOddSizeImg} alt="Odd sized capacity" className="md:w-8 w-6" />
+                  <Image
+                    src={capacityOddSizeImg.src}
+                    height={capacityOddSizeImg.height}
+                    width={capacityOddSizeImg.width}
+                    alt="Odd sized capacity"
+                    className="md:w-8 w-6"
+                  />
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">Odd-sized</span>
                     <span className="text-sm text-muted-foreground">
