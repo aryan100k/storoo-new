@@ -1,5 +1,4 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { AutoCompleteInput } from "@/components/auto-complete-input";
 import { PartnerListingForm } from "./components/partner-listing-form";
 
 const AddListingPage = () => {
