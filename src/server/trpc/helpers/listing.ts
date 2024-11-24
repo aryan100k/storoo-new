@@ -32,6 +32,8 @@ export const addListingRequest = async (listing: ListingSchema) => {
     createdAt: new Date().toISOString(),
     capacityId: capacityId[0].insertedId,
     approvalStatus: "pending",
+    latitude: 0,
+    longitude: 0,
   };
 
   const storageId = await db

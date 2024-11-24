@@ -15,6 +15,9 @@ CREATE TABLE IF NOT EXISTS "storage_details" (
 	"city" text NOT NULL,
 	"locality" text NOT NULL,
 	"postal_code" text NOT NULL,
+	"place_id" text DEFAULT '' NOT NULL,
+	"latitude" integer DEFAULT 0 NOT NULL,
+	"longitude" integer DEFAULT 0 NOT NULL,
 	"space_type" text NOT NULL,
 	"capacity_id" integer NOT NULL,
 	"operating_hours" text NOT NULL,
@@ -25,9 +28,7 @@ CREATE TABLE IF NOT EXISTS "storage_details" (
 	"additional_note" text,
 	"referral_source" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"approvalStatus" text DEFAULT 'pending' NOT NULL,
-	CONSTRAINT "storage_details_email_unique" UNIQUE("email"),
-	CONSTRAINT "storage_details_phone_unique" UNIQUE("phone")
+	"approvalStatus" text DEFAULT 'pending' NOT NULL
 );
 --> statement-breakpoint
 DO $$ BEGIN

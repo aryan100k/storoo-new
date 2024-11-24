@@ -13,7 +13,7 @@ export const storageDetailsTable = pgTable("storage_details", {
   postalCode: text("postal_code").notNull(),
   placeId: text("place_id").notNull().default(""),
   latitude: integer().notNull().default(0),
-  longitude: integer().notNull().$default(0),
+  longitude: integer().notNull().default(0),
   spaceType: text("space_type").notNull(),
   capacityId: integer("capacity_id")
     .notNull()
