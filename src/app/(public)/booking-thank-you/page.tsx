@@ -1,13 +1,6 @@
 import Link from "next/link";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 
@@ -20,17 +13,12 @@ const PartnerThankYouPage = () => {
             <CheckCircle className="w-12 h-12 text-green-500" />
           </div>
           <CardTitle className="text-2xl font-bold text-center">
-            Thank You for Your Application!
+            Thank You for Your Choosing Storoo!
           </CardTitle>
-          <CardDescription className="text-center">
-            We appreciate your interest in partnering with Storoo.
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-center mb-4">
-            Our team will carefully review your application and get back to you soon. We're excited
-            about the possibility of working together to provide secure luggage storage for
-            travelers.
+            Your request has been submitted successfully. We will get back to you within shortly.
           </p>
           <p className="text-center mb-4">
             If you have any questions or need to provide additional information, please don't
