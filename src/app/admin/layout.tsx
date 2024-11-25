@@ -11,7 +11,7 @@ import { routes } from "@/lib/routes";
 const AdminLayout = async (props: PropsWithChildren) => {
   const user = await getUser();
 
-  if (!user?.id) {
+  if (user?.role !== "admin") {
     redirect(routes.login);
   }
 
