@@ -48,12 +48,12 @@ export const AdminSidebar = () => {
 
   return (
     <Sidebar variant="sidebar" className="bg-background">
-      <SidebarHeader className="flex items-center justify-between flex-row px-4">
+      <SidebarHeader className="flex items-center justify-between flex-row px-4 bg-background">
         <span className="text-lg font-semibold text-brand">Storoo Admin</span>
         <SidebarTrigger />
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="bg-background">
         <SidebarGroup>
           <SidebarGroupLabel>Admin Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
@@ -76,7 +76,8 @@ export const AdminSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+
+      <SidebarFooter className="bg-background">
         <LogoutBtn />
       </SidebarFooter>
     </Sidebar>

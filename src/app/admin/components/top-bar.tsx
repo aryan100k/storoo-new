@@ -9,7 +9,7 @@ export const TopBar = () => {
   const { open, isMobile, setOpen, setOpenMobile, openMobile, state } = useSidebar();
 
   return (
-    <div className="flex items-center border-b py-2 px-4 justify-between h-12">
+    <div className="flex items-center shadow-sm py-2 px-4 justify-between h-12 bg-background">
       <div className="flex items-center gap-3">
         {(state === "collapsed" || isMobile) && (
           <>
@@ -18,7 +18,7 @@ export const TopBar = () => {
               variant="outline"
               size="icon"
               className="w-7 h-7"
-              onClick={(event) => {
+              onClick={() => {
                 isMobile ? setOpenMobile(!openMobile) : setOpen(!open);
               }}
             >

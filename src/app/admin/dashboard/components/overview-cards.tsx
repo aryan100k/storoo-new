@@ -15,7 +15,7 @@ export const OverviewCards = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div className="rounded-md shadow-sm border p-3">
+      <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">Total Booking Requests</span>
           <BookOpen className="h-4 w-4 text-muted-foreground" />
@@ -25,7 +25,7 @@ export const OverviewCards = () => {
         </span>
       </div>
 
-      <div className="rounded-md shadow-sm border p-3">
+      <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">Active Storage Points</span>
           <Package className="h-4 w-4 text-muted-foreground" />
@@ -35,7 +35,7 @@ export const OverviewCards = () => {
         </div>
       </div>
 
-      <div className="rounded-md shadow-sm border p-3">
+      <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">
             Pending Partner Applications
