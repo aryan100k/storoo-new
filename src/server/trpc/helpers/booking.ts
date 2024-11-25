@@ -16,9 +16,9 @@ export const addNewBookingRequest = async (booking: BookingRequestSchema, userId
     name: booking.name,
     phone: booking.phone,
     luggageType: booking.luggageType,
-    startDate: booking.startDate.toISOString(),
-    endDate: booking.endDate.toISOString(),
-    createdAt: new Date().toISOString(),
+    startDate: booking.startDate,
+    endDate: booking.endDate,
+    createdAt: new Date(),
   };
 
   const [bookingId] = await db

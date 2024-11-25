@@ -23,8 +23,8 @@ export const addListingRequest = async (listing: ListingSchema, userId?: string)
       oddSize: listing.storageCapacity.oddSided,
       regular: listing.storageCapacity.regular,
       small: listing.storageCapacity.small,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
     })
     .returning({ insertedId: capacityTable.id });
 
@@ -88,7 +88,7 @@ export const getListingCountByStatus = (status: StorageDetails["approvalStatus"]
 
 export const getLatestCapacityUpdate = async () => {
   const res = await db.query.capacityTable.findFirst({
-    orderBy: (fields, { asc }) => [asc(fields.updatedAt)],
+    orderBy: (fields, { desc }) => [desc(fields.updatedAt)],
   });
 
   return res || null;

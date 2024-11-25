@@ -62,7 +62,7 @@ export const signUp = async (config: SignUpSchema) => {
     password: hashedPassword,
     name: config.name,
     phone: config.phone,
-    createdAt: new Date().toISOString(),
+    createdAt: new Date(),
     emailVerified: false,
     phoneVerified: false,
     role: "user",

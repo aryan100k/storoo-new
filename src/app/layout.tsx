@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {

@@ -53,8 +53,8 @@ export const capacityTable = pgTable("storage_capacity", {
   small: integer().default(0).notNull(),
   regular: integer().default(0).notNull(),
   oddSize: integer("odd_size").default(0).notNull(),
-  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export const storageDetailsRelations = relations(storageDetailsTable, ({ one, many }) => ({
@@ -88,7 +88,7 @@ export const userTable = pgTable("user", {
   enabled: boolean().default(true).notNull(),
   emailVerified: boolean().default(false).notNull(),
   phoneVerified: boolean().default(false).notNull(),
-  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   imgFolderId: text("img_folder_id"),
   role: text({
     enum: ["admin", "user"],
@@ -127,16 +127,16 @@ export const bookingTable = pgTable("booking", {
   storageId: integer("storage_id").references(() => storageDetailsTable.id, {
     onDelete: "cascade",
   }),
-  startDate: timestamp("start_date", { mode: "string" }).notNull(),
-  endDate: timestamp("end_date", { mode: "string" }).notNull(),
+  startDate: timestamp("start_date", { mode: "date" }).notNull(),
+  endDate: timestamp("end_date", { mode: "date" }).notNull(),
   luggageType: text({ enum: ["small", "regular", "odd_size", "other"] }).notNull(),
   status: text({
     enum: ["pending", "approved", "rejected", "completed", "other"],
   })
     .default("pending")
     .notNull(),
-  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
-  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
 
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
