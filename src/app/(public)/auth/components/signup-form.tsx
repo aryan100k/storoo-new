@@ -22,7 +22,7 @@ import { Loader2 } from "lucide-react";
 
 import { trpc } from "@/lib/trpc";
 import { signUpSchema, SignUpSchema } from "@/lib/zod/auth";
-import { adminRoutes, routes } from "@/lib/routes";
+import { routes } from "@/lib/routes";
 import { showErrorToast } from "@/lib/api-errors";
 
 export const defaultValues = (): SignUpSchema => ({
@@ -40,8 +40,8 @@ export const SignupForm = () => {
 
   const router = useRouter();
   const { status, mutate } = trpc.signup.useMutation({
-    onSuccess: () => {
-      router.push(adminRoutes.dashboard);
+    onSuccess: (data) => {
+      router.push(routes.home);
     },
     onError: (error) => {
       showErrorToast(error.message);
