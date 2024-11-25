@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "@/hooks/use-toast";
 import { trpc } from "@/lib/trpc";
 import { ListingSchema, listingSchema } from "@/lib/zod/listing";
+import { toast } from "sonner";
 
 import {
   Select,
@@ -52,10 +52,8 @@ export const PartnerListingForm = () => {
     },
     onError: (error) => {
       console.error(error);
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "There was a problem submitting your application. Please try again.",
-        variant: "destructive",
       });
     },
   });

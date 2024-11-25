@@ -1,0 +1,29 @@
+.react-international-phone-input-container {
+  --react-international-phone-font-size: 1rem;
+  --react-international-phone-height: auto;
+  --react-international-phone-background-color: hsl(var(--background));
+  --react-international-phone-disabled-background-color: hsl(var(--background));
+}
+
+.react-international-phone-input-container .react-international-phone-input {
+  height: auto !important;
+}
+
+.react-international-phone-country-selector-button {
+  border: none !important;
+}
+
+.react-international-phone-input-container
+  .react-international-phone-input--disabled {
+  background-color: var(
+    --react-international-phone-background-color,
+    white
+  ) !important;
+  color: inherit;
+}
+
+@media (min-width: 640px) {
+  .react-international-phone-input-container {
+    --react-international-phone-font-size: 0.875rem;
+  }
+}

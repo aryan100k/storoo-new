@@ -81,7 +81,7 @@ export const users = pgTable("users", {
   id: serial().primaryKey().notNull(),
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
-  phone: varchar({ length: 255 }).notNull(),
+  phone: varchar({ length: 255 }).notNull().unique(),
   password: varchar({ length: 255 }),
   enabled: boolean().default(true).notNull(),
   emailVerified: boolean().default(false).notNull(),
@@ -118,3 +118,4 @@ export const userRelations = relations(users, ({ one, many }) => ({
 }));
 
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
+export type User = typeof users.$inferInsert;
