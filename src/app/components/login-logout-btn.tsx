@@ -6,12 +6,16 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export const LoginLogoutBtn = (props: { className?: string; size?: "sm" }) => {
+  const router = useRouter();
+
   const { data, isLoading, refetch } = trpc.user.useQuery();
   const { status, mutate: logoutMutate } = trpc.logout.useMutation({
     onSettled: () => {
       refetch();
+      router.refresh();
     },
   });
 
