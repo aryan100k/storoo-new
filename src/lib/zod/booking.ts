@@ -7,7 +7,7 @@ export const bookingRequestSchema = z.object({
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   luggageType: z.enum(["small", "regular", "odd_size", "other"]),
-  storageId: z.string().optional(),
+  storageId: z.number().optional(),
 });
 
 export type BookingRequestSchema = z.infer<typeof bookingRequestSchema>;

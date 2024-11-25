@@ -13,6 +13,7 @@ export const getLatestBookingRequest = async () => {
 export const addNewBookingRequest = async (booking: BookingRequestSchema, userId?: string) => {
   const bookingRequest: Booking = {
     userId,
+    storageId: booking.storageId,
     name: booking.name,
     phone: booking.phone,
     luggageType: booking.luggageType,

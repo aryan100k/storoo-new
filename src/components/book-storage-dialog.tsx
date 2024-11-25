@@ -38,7 +38,11 @@ import { routes } from "@/lib/routes";
 import { showErrorToast } from "@/lib/api-errors";
 import { bookingRequestSchema, BookingRequestSchema } from "@/lib/zod/booking";
 
-export const BookNowDialog = (props: React.PropsWithChildren) => {
+export const BookNowDialog = (
+  props: React.PropsWithChildren<{
+    storageId?: number;
+  }>
+) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -56,7 +60,7 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
           </DialogDescription>
         </DialogHeader>
 
-        <BookingForm />
+        <BookingForm storageId={props.storageId} />
       </DialogContent>
     </Dialog>
   );
@@ -70,7 +74,7 @@ const defaultValues = (): BookingRequestSchema => ({
   startDate: new Date(),
 });
 
-const BookingForm = () => {
+const BookingForm = (props: { storageId?: number }) => {
   const router = useRouter();
   const { status, mutate: addBooking } = trpc.addNewBookingRequest.useMutation({
     onSuccess: () => {
@@ -87,6 +91,7 @@ const BookingForm = () => {
   });
 
   const onSubmit = (values: BookingRequestSchema) => {
+    values.storageId = props.storageId;
     addBooking(values);
   };
 

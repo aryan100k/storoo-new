@@ -56,7 +56,7 @@ const LocationsPage = () => {
 
               <p className="font-semibold text-blue-600 mt-2">₹{location.rent}/day</p>
 
-              <BookNowDialog />
+              <BookNowDialog storageId={location.id} />
             </div>
           ))}
         </div>
@@ -86,7 +86,7 @@ const LocationsPage = () => {
               {selectedLocation?.locality}, {selectedLocation?.city}
             </p>
             <p className="text-sm font-semibold mt-1">{selectedLocation?.rent}</p>
-            <BookNowDialog />
+            <BookNowDialog storageId={selectedLocation?.id} />
           </div>
         </GoogleMap>
       </div>
