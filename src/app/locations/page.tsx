@@ -20,8 +20,8 @@ const LocationsPage = () => {
     [data, selectedLocationId]
   );
   const center = {
-    lat: parseFloat(data?.[0].latitude!) || 17.385,
-    lng: parseFloat(data?.[0].longitude!) || 78.4867,
+    lat: parseFloat(data?.[0]?.latitude!) || 17.385,
+    lng: parseFloat(data?.[0]?.longitude!) || 78.4867,
   };
 
   if (isLoading) {
