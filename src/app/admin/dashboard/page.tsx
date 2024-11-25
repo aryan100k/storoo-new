@@ -1,5 +1,11 @@
+import { OverviewCards } from "./components/overview-cards";
+
 const AdminDashboardPage = () => {
-  return <div>AdminDashboardPage</div>;
+  return (
+    <div>
+      <OverviewCards />
+    </div>
+  );
 };
 
 export default AdminDashboardPage;

@@ -4,6 +4,7 @@ import { ListingSchema } from "@/lib/zod/listing";
 import { db } from "@/server/drizzle/db";
 import { capacityTable, StorageDetails, storageDetailsTable } from "@/server/drizzle/schema";
 import { TRPCError } from "@trpc/server";
+import { count, eq } from "drizzle-orm";
 
 export const addListingRequest = async (listing: ListingSchema, userId?: string) => {
   const geoCode = await getGeocodeFromPlaceId(listing.placeId);
@@ -67,4 +68,18 @@ export const getAvailableListings = async () => {
       capacity: true,
     },
   });
+};
+
+export const getListingCountByStatus = async (status: StorageDetails["approvalStatus"]) => {
+  const query = db
+    .select({
+      count: count(storageDetailsTable.id),
+    })
+    .from(storageDetailsTable);
+
+  if (status) {
+    query.where(eq(storageDetailsTable.approvalStatus, status));
+  }
+
+  return query;
 };

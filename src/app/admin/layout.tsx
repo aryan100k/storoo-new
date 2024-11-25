@@ -1,9 +1,11 @@
 import { PropsWithChildren } from "react";
+import { redirect } from "next/navigation";
+
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AdminSidebar } from "./components/side-bar";
 import { TopBar } from "./components/top-bar";
+
 import { getUser } from "@/server/trpc/context";
-import { redirect } from "next/navigation";
 import { routes } from "@/lib/routes";
 
 const AdminLayout = async (props: PropsWithChildren) => {
@@ -18,7 +20,7 @@ const AdminLayout = async (props: PropsWithChildren) => {
       <AdminSidebar />
       <SidebarInset>
         <TopBar />
-        {props.children}
+        <main className="container md:px-3 my-3 md:my-4">{props.children}</main>
       </SidebarInset>
     </SidebarProvider>
   );
