@@ -51,9 +51,9 @@ export const publicRouter = router({
       spaceType: spaceTypeMap[listing.spaceType] || listing.spaceType,
     }));
   }),
-  addListing: procedure.input(listingSchema).mutation(async ({ input }) => {
+  addListing: procedure.input(listingSchema).mutation(async ({ input, ctx }) => {
     try {
-      const storageId = await addListingRequest(input);
+      const storageId = await addListingRequest(input, ctx.user?.id);
       return {
         status: "success",
         storageId,

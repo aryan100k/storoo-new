@@ -5,7 +5,7 @@ import { db } from "@/server/drizzle/db";
 import { capacityTable, StorageDetails, storageDetailsTable } from "@/server/drizzle/schema";
 import { TRPCError } from "@trpc/server";
 
-export const addListingRequest = async (listing: ListingSchema) => {
+export const addListingRequest = async (listing: ListingSchema, userId?: string) => {
   const geoCode = await getGeocodeFromPlaceId(listing.placeId);
   const { lat, lng } = geoCode?.result.geometry.location || {};
 
@@ -26,6 +26,7 @@ export const addListingRequest = async (listing: ListingSchema) => {
     .returning({ insertedId: capacityTable.id });
 
   const storageDetails: StorageDetails = {
+    userId,
     businessName: listing.businessName,
     contactName: listing.contactName,
     email: listing.email,
