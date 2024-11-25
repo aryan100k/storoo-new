@@ -16,6 +16,7 @@ const getDifference = (date: string) => {
 export const RecentActivities = () => {
   const { data: capacityDetails } = trpc.getLatestCapacityUpdate.useQuery();
   const { data: storageDetails } = trpc.getLatestPartnerUpdate.useQuery();
+  const { data: bookingDetails } = trpc.getLatestBookingRequest.useQuery();
 
   return (
     <div className="rounded-md border p-5 bg-background">
@@ -23,7 +24,9 @@ export const RecentActivities = () => {
       <ul className="space-y-2 mt-3">
         <li className="flex justify-between items-center text-xs">
           <span>New booking request</span>
-          <span className="text-muted-foreground">2 minutes ago</span>
+          <span className="text-muted-foreground">
+            {bookingDetails?.createdAt ? getDifference(bookingDetails.createdAt) : "N/A"}
+          </span>
         </li>
 
         <li className="flex justify-between items-center text-xs">

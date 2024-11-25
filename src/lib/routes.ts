@@ -3,6 +3,7 @@ export const routes = {
   addListing: "/add-listing",
   partnerTerms: "/partner-terms",
   partnerThankYou: "/partner-thank-you",
+  bookingThankYou: "/booking-thank-you",
   login: "/auth/login",
   signup: "/auth/signup",
 };

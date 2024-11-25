@@ -1,53 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { DialogDescription } from "@radix-ui/react-dialog";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { Loader2 } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { PhoneNumberInput } from "./phone-number-input";
+import { CalendarInput } from "./calendar-input";
+
+import { trpc } from "@/lib/trpc";
+import { routes } from "@/lib/routes";
+import { showErrorToast } from "@/lib/api-errors";
+import { bookingRequestSchema, BookingRequestSchema } from "@/lib/zod/booking";
 
 export const BookNowDialog = (props: React.PropsWithChildren) => {
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    luggageType: "Small Bag",
-    duration: "Few Hours",
-  });
-
-  const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await fetch("/api/booking/book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-        }),
-      });
-
-      if (response.ok) {
-        setIsFormSubmitted(true);
-      } else {
-        console.error("Booking failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -64,84 +55,144 @@ export const BookNowDialog = (props: React.PropsWithChildren) => {
             Book your luggage storage
           </DialogDescription>
         </DialogHeader>
-        {!isFormSubmitted ? (
-          <form onSubmit={handleFormSubmit} className="space-y-4 !bg-white w-full">
-            <div className="bg-white">
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input
-                id="fullName"
-                required
-                value={formData.fullName}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="bg-white">
-              <Label htmlFor="phoneNumber">Phone Number</Label>
-              <Input
-                id="phoneNumber"
-                type="tel"
-                required
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="bg-white">
-              <Label htmlFor="luggageType">Luggage Type</Label>
-              <Select
-                value={formData.luggageType}
-                onValueChange={(value) => {
-                  setFormData((prev) => ({ ...prev, luggageType: value }));
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Luggage Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Small Bag">Small Bag</SelectItem>
-                  <SelectItem value="Large Suitcase">Large Suitcase</SelectItem>
-                  <SelectItem value="Multiple Bags">Multiple Bags</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="bg-white">
-              <Label htmlFor="duration">Storage Duration</Label>
-              <Select
-                value={formData.duration}
-                onValueChange={(value) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    duration: value,
-                  }));
-                }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Storage Duration" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Few Hours">Few Hours</SelectItem>
-                  <SelectItem value="1 Day">1 Day</SelectItem>
-                  <SelectItem value="2-3 Days">2-3 Days</SelectItem>
-                  <SelectItem value="Week or More">Week or More</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <Button
-              type="submit"
-              className="w-full border-2 border-brand text-brand bg-white 
-             hover:bg-brand hover:text-white hover:shadow-lg 
-             transition-all duration-300 ease-in-out"
-            >
-              Submit
-            </Button>
-          </form>
-        ) : (
-          <div className="text-center py-8 bg-white">
-            <p className="text-xl font-semibold mb-4">Thank you for choosing Storoo!</p>
-            <p>Our team will contact you within minutes.</p>
-          </div>
-        )}
+
+        <BookingForm />
       </DialogContent>
     </Dialog>
+  );
+};
+
+const defaultValues = (): BookingRequestSchema => ({
+  name: "",
+  phone: "",
+  luggageType: "regular",
+  endDate: new Date(),
+  startDate: new Date(),
+});
+
+const BookingForm = () => {
+  const router = useRouter();
+  const { status, mutate: addBooking } = trpc.addNewBookingRequest.useMutation({
+    onSuccess: () => {
+      router.push(routes.bookingThankYou);
+    },
+    onError: (error) => {
+      showErrorToast(error.message);
+    },
+  });
+
+  const form = useForm<BookingRequestSchema>({
+    resolver: zodResolver(bookingRequestSchema),
+    defaultValues: defaultValues(),
+  });
+
+  const onSubmit = (values: BookingRequestSchema) => {
+    addBooking(values);
+  };
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem className="col-span-full">
+              <FormLabel>Full name</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem className="col-span-full">
+              <FormLabel>Phone</FormLabel>
+              <FormControl>
+                <PhoneNumberInput {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="startDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Start date</FormLabel>
+              <FormControl>
+                <CalendarInput {...field} className="w-full" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="endDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>End date</FormLabel>
+              <FormControl>
+                <CalendarInput {...field} className="w-full" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="luggageType"
+          render={({ field }) => (
+            <FormItem className="col-span-full">
+              <FormLabel>Luged Type</FormLabel>
+              <FormControl>
+                <Select
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Luggage Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="small">Small Bag (e.g. backpack, purse)</SelectItem>
+                    <SelectItem value="regular">Regular Suitcase (e.g. 24" suitcase)</SelectItem>
+                    <SelectItem value="odd_size">
+                      Odd Size (e.g. musical instruments, Surfboards)
+                    </SelectItem>
+                    <SelectItem value="other">Other (e.g. large items)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          variant="brand"
+          className="w-full mt-2 col-span-full"
+          disabled={status === "pending"}
+        >
+          Submit
+          {status === "pending" && <Loader2 className="animate-spin" />}
+        </Button>
+      </form>
+    </Form>
   );
 };

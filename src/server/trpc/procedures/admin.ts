@@ -5,6 +5,7 @@ import {
   getLatestPartnerUpdate,
   getListingCountByStatus,
 } from "../helpers/listing";
+import { getLatestBookingRequest } from "../helpers/booking";
 import { z } from "zod";
 
 export const adminProcedure = procedure.use(async (opts) => {
@@ -42,5 +43,8 @@ export const adminRouter = router({
   }),
   getLatestPartnerUpdate: adminProcedure.query(() => {
     return getLatestPartnerUpdate();
+  }),
+  getLatestBookingRequest: adminProcedure.query(() => {
+    return getLatestBookingRequest();
   }),
 });

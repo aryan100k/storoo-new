@@ -87,18 +87,16 @@ export const getListingCountByStatus = (status: StorageDetails["approvalStatus"]
 };
 
 export const getLatestCapacityUpdate = async () => {
-  const [res] = await db.query.capacityTable.findMany({
+  const res = await db.query.capacityTable.findFirst({
     orderBy: (fields, { asc }) => [asc(fields.updatedAt)],
-    limit: 1,
   });
 
   return res || null;
 };
 
 export const getLatestPartnerUpdate = async () => {
-  const [res] = await db.query.storageDetailsTable.findMany({
+  const res = await db.query.storageDetailsTable.findFirst({
     orderBy: (fields, { asc }) => [asc(fields.createdAt)],
-    limit: 1,
     columns: {
       id: true,
       createdAt: true,

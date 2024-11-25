@@ -2,12 +2,14 @@ import { cookies } from "next/headers";
 import { TRPCError } from "@trpc/server";
 
 import { router, procedure } from "@/server/trpc";
-import { addListingRequest, getAvailableListings } from "@/server/trpc/helpers/listing";
 import { login, signUp } from "@/server/trpc/helpers/auth";
+import { addListingRequest, getAvailableListings } from "@/server/trpc/helpers/listing";
+import { addNewBookingRequest } from "@/server/trpc/helpers/booking";
 
+import { lucia } from "@/server/lucia";
 import { listingSchema } from "@/lib/zod/listing";
 import { loginSchema, signUpSchema } from "@/lib/zod/auth";
-import { lucia } from "@/server/lucia";
+import { bookingRequestSchema } from "@/lib/zod/booking";
 
 export const publicRouter = router({
   test: procedure.query(async () => {
@@ -87,5 +89,14 @@ export const publicRouter = router({
         message: "Something went wrong",
       });
     }
+  }),
+
+  addNewBookingRequest: procedure.input(bookingRequestSchema).mutation(async ({ input, ctx }) => {
+    const bookingId = await addNewBookingRequest(input, ctx.user?.id);
+
+    return {
+      status: "success",
+      bookingId,
+    };
   }),
 });

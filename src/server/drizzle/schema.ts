@@ -119,5 +119,26 @@ export const userRelations = relations(userTable, ({ one, many }) => ({
   }),
 }));
 
+export const bookingTable = pgTable("booking", {
+  id: serial().primaryKey().notNull(),
+  name: text(),
+  phone: text(),
+  userId: text("user_id"),
+  storageId: integer("storage_id").references(() => storageDetailsTable.id, {
+    onDelete: "cascade",
+  }),
+  startDate: timestamp("start_date", { mode: "string" }).notNull(),
+  endDate: timestamp("end_date", { mode: "string" }).notNull(),
+  luggageType: text({ enum: ["small", "regular", "odd_size", "other"] }).notNull(),
+  status: text({
+    enum: ["pending", "approved", "rejected", "completed", "other"],
+  })
+    .default("pending")
+    .notNull(),
+  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
+});
+
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
 export type User = typeof userTable.$inferInsert;
+export type Booking = typeof bookingTable.$inferInsert;
