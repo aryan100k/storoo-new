@@ -59,10 +59,6 @@ export const getGeocodeFromPlaceId = async (placeId: string) => {
       },
     });
 
-    console.log(
-      `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${googleMapAPIKey}`
-    );
-
     if (response.data) {
       return response.data as { result: { geometry: Geometry } };
     }

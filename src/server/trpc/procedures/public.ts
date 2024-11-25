@@ -7,11 +7,13 @@ import { login, signUp } from "@/server/trpc/helpers/auth";
 
 import { listingSchema } from "@/lib/zod/listing";
 import { loginSchema, signUpSchema } from "@/lib/zod/auth";
+import { lucia } from "@/server/lucia";
 
 export const publicRouter = router({
   test: procedure.query(async () => {
     return "hello world";
   }),
+
   login: procedure.input(loginSchema).mutation(async ({ input }) => {
     const session = await login(input.email, input.password);
 
@@ -29,6 +31,25 @@ export const publicRouter = router({
       status: "success",
     };
   }),
+  logout: procedure.mutation(async () => {
+    const cookiesObj = await cookies();
+    const sessionId = cookiesObj.get(lucia.sessionCookieName)?.value ?? null;
+
+    if (sessionId) {
+      await lucia.invalidateSession(sessionId);
+      cookiesObj.set(lucia.sessionCookieName, "", {
+        expires: new Date(0), // Immediately expires the cookie
+      });
+    }
+
+    return {
+      status: "success",
+    };
+  }),
+  user: procedure.query(async ({ ctx }) => {
+    return ctx.user;
+  }),
+
   getAvailableListings: procedure.query(async () => {
     const listings = await getAvailableListings();
 

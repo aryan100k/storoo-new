@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import {
   Sheet,
   SheetClose,
@@ -10,6 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import { BookNowDialog } from "@/components/book-storage-dialog";
 import { Menu } from "lucide-react";
+import { LoginLogoutBtn } from "./login-logout-btn";
 
 const links = [
   {
@@ -32,16 +34,18 @@ const links = [
 
 export const Navbar = () => {
   return (
-    <div className="container mx-auto py-4 flex justify-between items-center">
+    <div className="container mx-auto py-3 flex justify-between items-center">
       <Link href="/" className="text-2xl font-bold text-brand">
         Storoo
       </Link>
-      <nav className="hidden md:flex space-x-6">
+      <nav className="hidden md:flex gap-6 items-center">
         {links.map((link) => (
           <Link key={link.title} href={link.href} className="text-gray-600 hover:text-brand">
             {link.title}
           </Link>
         ))}
+
+        <LoginLogoutBtn size="sm" />
       </nav>
 
       <Sheet>
@@ -64,11 +68,15 @@ export const Navbar = () => {
             </SheetClose>
           ))}
 
-          <BookNowDialog>
-            <button className="mt-auto w-full px-4 py-2 bg-brand text-white rounded-md">
-              Find Storage
-            </button>
-          </BookNowDialog>
+          <div className="mt-auto w-full flex flex-col gap-2">
+            <LoginLogoutBtn className="w-full" />
+
+            <BookNowDialog>
+              <button className="w-full px-4 py-2 bg-brand text-white rounded-md">
+                Find Storage
+              </button>
+            </BookNowDialog>
+          </div>
         </SheetContent>
       </Sheet>
     </div>
