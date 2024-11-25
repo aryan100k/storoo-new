@@ -1,6 +1,10 @@
 import { TRPCError } from "@trpc/server";
 import { procedure, router } from "..";
-import { getListingCountByStatus } from "../helpers/listing";
+import {
+  getLatestCapacityUpdate,
+  getLatestPartnerUpdate,
+  getListingCountByStatus,
+} from "../helpers/listing";
 import { z } from "zod";
 
 export const adminProcedure = procedure.use(async (opts) => {
@@ -32,4 +36,11 @@ export const adminRouter = router({
       const [res] = await getListingCountByStatus(input?.status);
       return res.count;
     }),
+
+  getLatestCapacityUpdate: adminProcedure.query(() => {
+    return getLatestCapacityUpdate();
+  }),
+  getLatestPartnerUpdate: adminProcedure.query(() => {
+    return getLatestPartnerUpdate();
+  }),
 });

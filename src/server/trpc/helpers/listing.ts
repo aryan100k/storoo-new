@@ -23,6 +23,8 @@ export const addListingRequest = async (listing: ListingSchema, userId?: string)
       oddSize: listing.storageCapacity.oddSided,
       regular: listing.storageCapacity.regular,
       small: listing.storageCapacity.small,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
     .returning({ insertedId: capacityTable.id });
 
@@ -70,7 +72,7 @@ export const getAvailableListings = async () => {
   });
 };
 
-export const getListingCountByStatus = async (status: StorageDetails["approvalStatus"]) => {
+export const getListingCountByStatus = (status: StorageDetails["approvalStatus"]) => {
   const query = db
     .select({
       count: count(storageDetailsTable.id),
@@ -82,4 +84,26 @@ export const getListingCountByStatus = async (status: StorageDetails["approvalSt
   }
 
   return query;
+};
+
+export const getLatestCapacityUpdate = async () => {
+  const [res] = await db.query.capacityTable.findMany({
+    orderBy: (fields, { asc }) => [asc(fields.updatedAt)],
+    limit: 1,
+  });
+
+  return res || null;
+};
+
+export const getLatestPartnerUpdate = async () => {
+  const [res] = await db.query.storageDetailsTable.findMany({
+    orderBy: (fields, { asc }) => [asc(fields.createdAt)],
+    limit: 1,
+    columns: {
+      id: true,
+      createdAt: true,
+    },
+  });
+
+  return res || null;
 };

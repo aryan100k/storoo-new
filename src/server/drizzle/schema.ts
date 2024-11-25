@@ -53,6 +53,8 @@ export const capacityTable = pgTable("storage_capacity", {
   small: integer().default(0).notNull(),
   regular: integer().default(0).notNull(),
   oddSize: integer("odd_size").default(0).notNull(),
+  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
 });
 
 export const storageDetailsRelations = relations(storageDetailsTable, ({ one, many }) => ({

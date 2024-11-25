@@ -1,0 +1,2 @@
+ALTER TABLE "storage_capacity" ADD COLUMN "created_at" timestamp DEFAULT now() NOT NULL;--> statement-breakpoint
+ALTER TABLE "storage_capacity" ADD COLUMN "updated_at" timestamp DEFAULT now() NOT NULL;
