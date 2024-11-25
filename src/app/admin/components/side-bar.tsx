@@ -14,7 +14,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { adminRoutes } from "@/lib/routes";
@@ -44,10 +43,9 @@ const navBarItems = [
   },
 ];
 
-export const GlobalSidebar = () => {
+export const AdminSidebar = () => {
   const pathname = usePathname();
 
-  console.log(pathname);
   return (
     <Sidebar variant="sidebar" className="bg-background">
       <SidebarHeader className="flex items-center justify-between flex-row px-4">

@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { GlobalSidebar } from "./components/side-bar";
+import { AdminSidebar } from "./components/side-bar";
 import { TopBar } from "./components/top-bar";
 import { getUser } from "@/server/trpc/context";
 import { redirect } from "next/navigation";
@@ -15,7 +15,7 @@ const AdminLayout = async (props: PropsWithChildren) => {
 
   return (
     <SidebarProvider>
-      <GlobalSidebar />
+      <AdminSidebar />
       <SidebarInset>
         <TopBar />
         {props.children}
