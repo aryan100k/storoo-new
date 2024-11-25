@@ -9,4 +9,7 @@ export const routes = {
 
 export const adminRoutes = {
   dashboard: "/admin/dashboard",
+  bookingRequests: "/admin/booking-requests",
+  storagePoints: "/admin/storage-points",
+  partnerListings: "/admin/partner-listings",
 };

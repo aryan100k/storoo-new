@@ -10,6 +10,7 @@ export const getUser = async () => {
 
   try {
     const { user } = await lucia.validateSession(sessionId);
+
     return user;
   } catch (error) {
     return null;

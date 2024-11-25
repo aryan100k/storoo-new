@@ -1,20 +1,86 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { adminRoutes } from "@/lib/routes";
+import { BookOpen, Home, Package, Users } from "lucide-react";
+import { LogoutBtn } from "./logout-btn";
 
-export function AppSidebar() {
+const navBarItems = [
+  {
+    title: "Dashboard",
+    href: adminRoutes.dashboard,
+    icon: Home,
+  },
+  {
+    title: "Booking Requests",
+    href: adminRoutes.bookingRequests,
+    icon: BookOpen,
+  },
+  {
+    title: "Partner Listings",
+    href: adminRoutes.partnerListings,
+    icon: Users,
+  },
+  {
+    title: "Storage Points",
+    href: adminRoutes.storagePoints,
+    icon: Package,
+  },
+];
+
+export const GlobalSidebar = () => {
+  const pathname = usePathname();
+
+  console.log(pathname);
   return (
-    <Sidebar variant="inset">
-      <SidebarHeader />
+    <Sidebar variant="sidebar" className="bg-background">
+      <SidebarHeader className="flex items-center justify-between flex-row px-4">
+        <span className="text-lg font-semibold text-brand">Storoo Admin</span>
+        <SidebarTrigger />
+      </SidebarHeader>
+
       <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+        <SidebarGroup>
+          <SidebarGroupLabel>Admin Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            {navBarItems.map((item) => (
+              <SidebarMenu key={item.title}>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    className="[&>svg]:size-3 text-xs"
+                  >
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            ))}
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <LogoutBtn />
+      </SidebarFooter>
     </Sidebar>
   );
-}
+};
