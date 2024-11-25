@@ -8,6 +8,13 @@ export const addListingRequest = async (listing: ListingSchema) => {
   const geoCode = await getGeocodeFromPlaceId(listing.placeId);
   const { lat, lng } = geoCode?.result.geometry.location || {};
 
+  if (!lat || !lng) {
+    throw new TRPCError({
+      code: "BAD_REQUEST",
+      message: "Invalid address",
+    });
+  }
+
   const capacityId = await db
     .insert(capacityTable)
     .values({
@@ -16,13 +23,6 @@ export const addListingRequest = async (listing: ListingSchema) => {
       small: listing.storageCapacity.small,
     })
     .returning({ insertedId: capacityTable.id });
-
-  if (!lat || !lng) {
-    throw new TRPCError({
-      code: "BAD_REQUEST",
-      message: "Invalid address",
-    });
-  }
 
   const storageDetails: StorageDetails = {
     businessName: listing.businessName,

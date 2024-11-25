@@ -1,8 +1,23 @@
-import { pgTable, text, timestamp, integer, serial, boolean, numeric } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  integer,
+  serial,
+  boolean,
+  numeric,
+  varchar,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const storageDetailsTable = pgTable("storage_details", {
   id: serial().primaryKey().notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .default(0)
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
   businessName: text("business_name").notNull(),
   contactName: text("contact_name").notNull(),
   email: text().notNull(),
@@ -49,11 +64,56 @@ export const storageDetailsRelations = relations(storageDetailsTable, ({ one, ma
   capacities: many(capacityTable, {
     relationName: "capacity_storageId_storageDetails_id",
   }),
+  user: one(users, {
+    fields: [storageDetailsTable.userId],
+    references: [users.id],
+    relationName: "storageDetails_userId_user_id",
+  }),
 }));
 
 export const capacityRelations = relations(capacityTable, ({ one, many }) => ({
   storageDetails: many(storageDetailsTable, {
     relationName: "storageDetails_capacityId_capacity_id",
+  }),
+}));
+
+export const users = pgTable("users", {
+  id: serial().primaryKey().notNull(),
+  name: varchar({ length: 255 }).notNull(),
+  email: varchar({ length: 255 }).notNull().unique(),
+  phone: varchar({ length: 255 }).notNull(),
+  password: varchar({ length: 255 }),
+  enabled: boolean().default(true).notNull(),
+  emailVerified: boolean().default(false).notNull(),
+  phoneVerified: boolean().default(false).notNull(),
+  createdAt: timestamp("created_at", { mode: "string" }).defaultNow().notNull(),
+  imgFolderId: text("img_folder_id"),
+  role: text({
+    enum: ["admin", "user"],
+  })
+    .default("user")
+    .notNull(),
+});
+
+export const userSession = pgTable("user_session", {
+  id: text().primaryKey().notNull(),
+  expiresAt: timestamp("expires_at", {
+    withTimezone: true,
+    mode: "string",
+  }).notNull(),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
+});
+
+export const userRelations = relations(users, ({ one, many }) => ({
+  session: one(userSession, {
+    fields: [users.id],
+    references: [userSession.userId],
+    relationName: "user_session_user_id",
+  }),
+  sessions: many(userSession, {
+    relationName: "user_session_user_id",
   }),
 }));
 
