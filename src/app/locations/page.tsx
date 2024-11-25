@@ -34,7 +34,7 @@ const LocationsPage = () => {
   }
 
   if (!data?.length) {
-    return <div className="flex items-center gap-2 justify-center my-40">No locations found</div>;
+    return <div className="flex items-center gap-2 justify-center my-44">No locations found</div>;
   }
 
   return (
