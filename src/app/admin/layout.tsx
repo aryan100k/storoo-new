@@ -18,6 +18,7 @@ const AdminLayout = async (props: PropsWithChildren) => {
   return (
     <SidebarProvider>
       <AdminSidebar />
+
       <SidebarInset className="bg-muted">
         <TopBar />
         <main className="container md:px-3 py-3 md:py-4 flex-grow">{props.children}</main>
