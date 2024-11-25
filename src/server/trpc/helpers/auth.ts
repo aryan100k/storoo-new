@@ -36,7 +36,7 @@ export const login = async (email: string, password: string) => {
   const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
 
-  return sessionCookie;
+  return { sessionCookie, id: user.id, email: user.email, role: user.role };
 };
 
 export const signUp = async (config: SignUpSchema) => {

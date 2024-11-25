@@ -1,4 +1,5 @@
 export const routes = {
+  home: "/",
   addListing: "/add-listing",
   partnerTerms: "/partner-terms",
   partnerThankYou: "/partner-thank-you",

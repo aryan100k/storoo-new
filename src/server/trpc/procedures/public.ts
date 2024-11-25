@@ -15,12 +15,13 @@ export const publicRouter = router({
   }),
 
   login: procedure.input(loginSchema).mutation(async ({ input }) => {
-    const session = await login(input.email, input.password);
+    const { sessionCookie, ...user } = await login(input.email, input.password);
 
-    (await cookies()).set(session.name, session.value, session.attributes);
+    (await cookies()).set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 
     return {
       status: "success",
+      user,
     };
   }),
   signup: procedure.input(signUpSchema).mutation(async ({ input }) => {

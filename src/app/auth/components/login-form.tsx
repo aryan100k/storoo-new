@@ -18,8 +18,12 @@ import { adminRoutes, routes } from "@/lib/routes";
 export const LoginForm = () => {
   const router = useRouter();
   const { status, mutate } = trpc.login.useMutation({
-    onSuccess: () => {
-      router.push(adminRoutes.dashboard);
+    onSuccess: (data) => {
+      if (data.user.role === "admin") {
+        return router.push(adminRoutes.dashboard);
+      }
+
+      return router.push(routes.home);
     },
     onError: (error) => {
       toast("Invalid credentials", {
