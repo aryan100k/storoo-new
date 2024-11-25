@@ -2,47 +2,45 @@ import bcrypt from "bcrypt";
 import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { db } from "@/server/drizzle/db";
-import { User, users } from "@/server/drizzle/schema";
+import { User, userTable } from "@/server/drizzle/schema";
 import { lucia } from "@/server/lucia";
 import { SignUpSchema } from "@/lib/zod/auth";
+import { apiErrors } from "@/lib/api-errors";
+import { getUid } from "@/lib/uid";
 
 const saltRounds = 10;
-
-export const generateHash = (plainText: string) => bcrypt.hashSync(plainText, saltRounds);
-
-export const validateHash = (plainText: string, hash: string) =>
-  bcrypt.compareSync(plainText, hash);
+const generateHash = (plainText: string) => bcrypt.hashSync(plainText, saltRounds);
+const validateHash = (plainText: string, hash: string) => bcrypt.compareSync(plainText, hash);
 
 export const login = async (email: string, password: string) => {
-  const user = await db.query.users.findFirst({
-    where: eq(users.email, email),
+  const user = await db.query.userTable.findFirst({
+    where: eq(userTable.email, email.toLowerCase()),
   });
 
   if (!user?.password) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Invalid email or password",
+      message: apiErrors.invalidCredentials,
     });
   }
 
-  const validPassword = validateHash(user.password, password);
+  const validPassword = validateHash(password, user.password);
 
   if (!validPassword) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Invalid email or password",
+      message: apiErrors.invalidCredentials,
     });
   }
 
-  const session = await lucia.createSession(user.id.toString(), {});
+  const session = await lucia.createSession(user.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
 
   return sessionCookie;
 };
 
 export const signUp = async (config: SignUpSchema) => {
-  // check for duplicate email or phone
-  const existingUser = await db.query.users.findFirst({
+  const existingUser = await db.query.userTable.findFirst({
     where: (table, { eq, or }) => or(eq(table.email, config.email), eq(table.phone, config.phone)),
     columns: {
       id: true,
@@ -52,13 +50,14 @@ export const signUp = async (config: SignUpSchema) => {
   if (existingUser?.id) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "User with this email or phone already exists",
+      message: apiErrors.userExists,
     });
   }
 
   const hashedPassword = generateHash(config.password);
 
   const userData: User = {
+    id: getUid(),
     email: config.email,
     password: hashedPassword,
     name: config.name,
@@ -68,8 +67,8 @@ export const signUp = async (config: SignUpSchema) => {
     phoneVerified: false,
     role: "user",
   };
-  const user = await db.insert(users).values(userData).returning({
-    userId: users.id,
+  const user = await db.insert(userTable).values(userData).returning({
+    userId: userTable.id,
   });
   const userId = user[0].userId;
 

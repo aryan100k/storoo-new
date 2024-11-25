@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
 import {
   Form,
@@ -18,12 +17,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
+import { PhoneNumberInput } from "@/components/phone-number-input";
 import { Loader2 } from "lucide-react";
 
 import { trpc } from "@/lib/trpc";
 import { signUpSchema, SignUpSchema } from "@/lib/zod/auth";
 import { adminRoutes, routes } from "@/lib/routes";
-import { PhoneNumberInput } from "@/components/phone-number-input";
+import { showErrorToast } from "@/lib/api-errors";
 
 export const defaultValues = (): SignUpSchema => ({
   email: "",
@@ -44,11 +44,7 @@ export const SignupForm = () => {
       router.push(adminRoutes.dashboard);
     },
     onError: (error) => {
-      console.log(error);
-
-      toast("Missing fields", {
-        description: "Please fill in all the required fields",
-      });
+      showErrorToast(error.message);
     },
   });
 
@@ -59,10 +55,10 @@ export const SignupForm = () => {
   };
 
   return (
-    <Card className="mx-auto max-w-sm my-4">
+    <Card className="mx-auto max-w-md my-4 w-full">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Enter your email below to login to your account</CardDescription>
+        <CardTitle className="text-2xl">Sign Up</CardTitle>
+        <CardDescription>Fill in the below details to create an account.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

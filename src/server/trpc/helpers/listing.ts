@@ -1,3 +1,4 @@
+import { apiErrors } from "@/lib/api-errors";
 import { getGeocodeFromPlaceId } from "@/lib/google-places";
 import { ListingSchema } from "@/lib/zod/listing";
 import { db } from "@/server/drizzle/db";
@@ -11,7 +12,7 @@ export const addListingRequest = async (listing: ListingSchema) => {
   if (!lat || !lng) {
     throw new TRPCError({
       code: "BAD_REQUEST",
-      message: "Invalid address",
+      message: apiErrors.listingInvalidAddress,
     });
   }
 
@@ -41,6 +42,7 @@ export const addListingRequest = async (listing: ListingSchema) => {
     termsAgreed: listing.termsAgreed,
     additionalNote: listing.additionalNotes,
     referralSource: listing.referralSource,
+    placeId: listing.placeId,
     createdAt: new Date().toISOString(),
     capacityId: capacityId[0].insertedId,
     approvalStatus: "pending",

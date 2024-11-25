@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS "storage_capacity" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "storage_details" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"user_id" integer DEFAULT 0 NOT NULL,
+	"user_id" text DEFAULT '0' NOT NULL,
 	"business_name" text NOT NULL,
 	"contact_name" text NOT NULL,
 	"email" text NOT NULL,
@@ -34,12 +34,12 @@ CREATE TABLE IF NOT EXISTS "storage_details" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_session" (
 	"id" text PRIMARY KEY NOT NULL,
-	"expires_at" timestamp with time zone NOT NULL,
-	"user_id" integer NOT NULL
+	"user_id" text NOT NULL,
+	"expires_at" timestamp with time zone NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "users" (
-	"id" serial PRIMARY KEY NOT NULL,
+CREATE TABLE IF NOT EXISTS "user" (
+	"id" text PRIMARY KEY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"phone" varchar(255) NOT NULL,
@@ -50,11 +50,12 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"img_folder_id" text,
 	"role" text DEFAULT 'user' NOT NULL,
-	CONSTRAINT "users_email_unique" UNIQUE("email")
+	CONSTRAINT "user_email_unique" UNIQUE("email"),
+	CONSTRAINT "user_phone_unique" UNIQUE("phone")
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "storage_details" ADD CONSTRAINT "storage_details_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "storage_details" ADD CONSTRAINT "storage_details_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -66,7 +67,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "user_session" ADD CONSTRAINT "user_session_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "user_session" ADD CONSTRAINT "user_session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

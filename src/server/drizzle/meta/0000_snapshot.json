@@ -1,5 +1,5 @@
 {
-  "id": "afe07416-77f9-46f6-b04e-b01c0f96c833",
+  "id": "de710230-2395-4ba6-aa19-63858942c9b8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -56,10 +56,10 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": 0
+          "default": "'0'"
         },
         "business_name": {
           "name": "business_name",
@@ -201,10 +201,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "storage_details_user_id_users_id_fk": {
-          "name": "storage_details_user_id_users_id_fk",
+        "storage_details_user_id_user_id_fk": {
+          "name": "storage_details_user_id_user_id_fk",
           "tableFrom": "storage_details",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
@@ -244,25 +244,25 @@
           "primaryKey": true,
           "notNull": true
         },
-        "expires_at": {
-          "name": "expires_at",
-          "type": "timestamp with time zone",
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "user_session_user_id_users_id_fk": {
-          "name": "user_session_user_id_users_id_fk",
+        "user_session_user_id_user_id_fk": {
+          "name": "user_session_user_id_user_id_fk",
           "tableFrom": "user_session",
-          "tableTo": "users",
+          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
@@ -279,13 +279,13 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.users": {
-      "name": "users",
+    "public.user": {
+      "name": "user",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -359,11 +359,18 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "users_email_unique": {
-          "name": "users_email_unique",
+        "user_email_unique": {
+          "name": "user_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
+          ]
+        },
+        "user_phone_unique": {
+          "name": "user_phone_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "phone"
           ]
         }
       },

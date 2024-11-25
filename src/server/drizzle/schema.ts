@@ -12,10 +12,10 @@ import { relations } from "drizzle-orm";
 
 export const storageDetailsTable = pgTable("storage_details", {
   id: serial().primaryKey().notNull(),
-  userId: integer("user_id")
+  userId: text("user_id")
     .notNull()
-    .default(0)
-    .references(() => users.id, {
+    .default("0")
+    .references(() => userTable.id, {
       onDelete: "cascade",
     }),
   businessName: text("business_name").notNull(),
@@ -64,9 +64,9 @@ export const storageDetailsRelations = relations(storageDetailsTable, ({ one, ma
   capacities: many(capacityTable, {
     relationName: "capacity_storageId_storageDetails_id",
   }),
-  user: one(users, {
+  user: one(userTable, {
     fields: [storageDetailsTable.userId],
-    references: [users.id],
+    references: [userTable.id],
     relationName: "storageDetails_userId_user_id",
   }),
 }));
@@ -77,8 +77,8 @@ export const capacityRelations = relations(capacityTable, ({ one, many }) => ({
   }),
 }));
 
-export const users = pgTable("users", {
-  id: serial().primaryKey().notNull(),
+export const userTable = pgTable("user", {
+  id: text("id").primaryKey().notNull(),
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
   phone: varchar({ length: 255 }).notNull().unique(),
@@ -95,27 +95,27 @@ export const users = pgTable("users", {
     .notNull(),
 });
 
-export const userSession = pgTable("user_session", {
+export const userSessionTable = pgTable("user_session", {
   id: text().primaryKey().notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
   expiresAt: timestamp("expires_at", {
     withTimezone: true,
-    mode: "string",
+    mode: "date",
   }).notNull(),
-  userId: integer("user_id")
-    .notNull()
-    .references(() => users.id),
 });
 
-export const userRelations = relations(users, ({ one, many }) => ({
-  session: one(userSession, {
-    fields: [users.id],
-    references: [userSession.userId],
+export const userRelations = relations(userTable, ({ one, many }) => ({
+  session: one(userSessionTable, {
+    fields: [userTable.id],
+    references: [userSessionTable.userId],
     relationName: "user_session_user_id",
   }),
-  sessions: many(userSession, {
+  sessions: many(userSessionTable, {
     relationName: "user_session_user_id",
   }),
 }));
 
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
-export type User = typeof users.$inferInsert;
+export type User = typeof userTable.$inferInsert;
