@@ -8,5 +8,5 @@ export const routes = {
 };
 
 export const adminRoutes = {
-  dashboard: "/",
+  dashboard: "/admin/dashboard",
 };
