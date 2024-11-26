@@ -15,10 +15,6 @@ import { LoginLogoutBtn } from "./login-logout-btn";
 
 const links = [
   {
-    title: "Home",
-    href: "/",
-  },
-  {
     title: "How It Works",
     href: "#how-it-works",
   },
