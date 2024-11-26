@@ -13,6 +13,7 @@ import { BookingDetails } from "@/server/drizzle/schema";
 import Link from "next/link";
 import { format } from "date-fns";
 import { luggageTypeMap } from "@/lib/zod/booking";
+import { StatusDropdown } from "./status-dropdown";
 
 export const BookingDetailsModal = (props: { booking: BookingDetails }) => {
   return (
@@ -53,6 +54,12 @@ export const BookingDetailsModal = (props: { booking: BookingDetails }) => {
           <div>
             <span className="font-semibold">CreatedAt:</span>{" "}
             {props.booking.createdAt && format(props.booking.createdAt, "dd/MM/yyyy")}
+          </div>
+          <div>
+            <span className="font-semibold">Status: </span>
+            {!!props.booking.id && (
+              <StatusDropdown bookingId={props.booking.id} status={props.booking.status} />
+            )}
           </div>
         </div>
 

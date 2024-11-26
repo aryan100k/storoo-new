@@ -8,6 +8,17 @@ export const luggageTypeMap = {
   other: "Other",
 };
 
+export const bookingStatusSchema = z.enum([
+  "pending",
+  "approved",
+  "rejected",
+  "completed",
+  "other",
+  "cancelled",
+]);
+
+export type BookingStatusSchema = z.infer<typeof bookingStatusSchema>;
+
 export const bookingRequestSchema = z.object({
   name: z.string().trim().min(1).max(255),
   phone: phoneSchema,

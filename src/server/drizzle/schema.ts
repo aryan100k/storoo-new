@@ -131,7 +131,7 @@ export const bookingTable = pgTable("booking", {
   endDate: timestamp("end_date", { mode: "date" }).notNull(),
   luggageType: text({ enum: ["small", "regular", "odd_size", "other"] }).notNull(),
   status: text({
-    enum: ["pending", "approved", "rejected", "completed", "other"],
+    enum: ["pending", "approved", "rejected", "completed", "other", "cancelled"],
   })
     .default("pending")
     .notNull(),

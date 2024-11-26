@@ -7,6 +7,7 @@ import { BookingDetails } from "@/server/drizzle/schema";
 import { luggageTypeMap } from "@/lib/zod/booking";
 import { cn } from "@/lib/utils";
 import { BookingDetailsModal } from "./details-modal";
+import { StatusDropdown } from "./status-dropdown";
 
 export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
@@ -42,24 +43,11 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
     header: "Status",
     accessorKey: "status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
-      const statusClass = {
-        approved: "bg-blue-100 text-blue-800 border-blue-400",
-        pending: "bg-yellow-100 text-yellow-800 border-yellow-400",
-        rejected: "bg-red-100 text-red-800 border-red-400",
-        completed: "bg-green-100 text-green-800 border-green-400",
-      };
+      if (!row.original.id) {
+        return;
+      }
 
-      return (
-        <span
-          className={cn(
-            "text-xs border px-2 py-0.5 bg-muted rounded-full",
-            statusClass[status as keyof typeof statusClass]
-          )}
-        >
-          {status}
-        </span>
-      );
+      return <StatusDropdown bookingId={row.original.id} status={row.original.status} />;
     },
   },
   {

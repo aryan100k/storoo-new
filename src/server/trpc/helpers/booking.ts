@@ -55,3 +55,7 @@ export const getBookings = async (config: { limit?: number; cursor?: number; sea
 
   return bookings;
 };
+
+export const updateBookingStatus = async (bookingId: number, status: Booking["status"]) => {
+  await db.update(bookingTable).set({ status }).where(eq(bookingTable.id, bookingId));
+};

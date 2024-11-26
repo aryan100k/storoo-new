@@ -9,8 +9,10 @@ import {
   getBookings,
   getBookingsTotalBookingsCount,
   getLatestBookingRequest,
+  updateBookingStatus,
 } from "../helpers/booking";
 import { z } from "zod";
+import { bookingRequestSchema, bookingStatusSchema } from "@/lib/zod/booking";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
@@ -65,5 +67,19 @@ export const adminRouter = router({
     )
     .query(async ({ input }) => {
       return getBookings(input);
+    }),
+
+  updateBookingStatus: adminProcedure
+    .input(
+      z.object({
+        bookingId: z.number(),
+        status: bookingStatusSchema,
+      })
+    )
+    .mutation(async ({ input }) => {
+      await updateBookingStatus(input.bookingId, input.status);
+      return {
+        status: "success",
+      };
     }),
 });
