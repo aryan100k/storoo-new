@@ -96,7 +96,7 @@ export const getLatestCapacityUpdate = async () => {
 
 export const getLatestPartnerUpdate = async () => {
   const res = await db.query.storageDetailsTable.findFirst({
-    orderBy: (fields, { asc }) => [asc(fields.createdAt)],
+    orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     columns: {
       id: true,
       createdAt: true,

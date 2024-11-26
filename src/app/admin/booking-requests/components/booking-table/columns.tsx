@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 import { BookingDetails } from "@/server/drizzle/schema";
 import { luggageTypeMap } from "@/lib/zod/booking";
-import { cn } from "@/lib/utils";
 import { BookingDetailsModal } from "./details-modal";
 import { StatusDropdown } from "./status-dropdown";
 

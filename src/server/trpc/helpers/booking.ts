@@ -1,11 +1,11 @@
-import { and, count, eq, gt, or, sql } from "drizzle-orm";
+import { and, count, eq, gt, lt, or, sql } from "drizzle-orm";
 import { db } from "@/server/drizzle/db";
 import { BookingRequestSchema } from "@/lib/zod/booking";
 import { Booking, bookingTable } from "@/server/drizzle/schema";
 
 export const getLatestBookingRequest = async () => {
   const res = await db.query.bookingTable.findFirst({
-    orderBy: (fields, { asc }) => [asc(fields.createdAt)],
+    orderBy: (fields, { desc }) => [desc(fields.createdAt)],
   });
 
   return res || null;
@@ -42,15 +42,22 @@ export const getBookingsTotalBookingsCount = async () => {
 };
 
 export const getBookings = async (config: { limit?: number; cursor?: number; search?: string }) => {
+  config.cursor = config.cursor || 0;
+  config.limit = config.limit || 5;
+
+  console.log({
+    limit: config.limit,
+    cursor: config.cursor,
+  });
+
   const bookings = await db.query.bookingTable.findMany({
-    orderBy: (fields, { asc }) => [asc(fields.createdAt)],
+    orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     limit: config.limit,
     offset: config.cursor,
-    where: (table, { gt, sql, and }) =>
-      or(
-        gt(table.id, config.cursor || 0),
-        or(sql`name ILIKE ${config.search}`, sql`phone ILIKE ${config.search}`)
-      ),
+    where: (table, { sql }) =>
+      config.search
+        ? or(sql`to_tsvector('simple', ${table.name}) @@ to_tsquery('simple', ${config.search})`)
+        : undefined,
   });
 
   return bookings;

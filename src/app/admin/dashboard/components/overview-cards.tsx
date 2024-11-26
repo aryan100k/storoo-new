@@ -9,7 +9,7 @@ export const OverviewCards = () => {
   const { data: approvedCount, isLoading: approvedCountLoading } =
     trpc.getListingCountByStatus.useQuery({ status: "approved" });
   const { data: totalBookingCount, isLoading: totalBookingCountLoading } =
-    trpc.getBookingsTotalBookingsCount.useQuery();
+    trpc.getTotalBookingsCount.useQuery();
 
   const isLoading = pendingCountLoading || approvedCountLoading || totalBookingCountLoading;
 

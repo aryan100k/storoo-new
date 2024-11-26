@@ -54,7 +54,7 @@ export const adminRouter = router({
     return getLatestBookingRequest();
   }),
 
-  getBookingsTotalBookingsCount: adminProcedure.query(async () => {
+  getTotalBookingsCount: adminProcedure.query(async () => {
     return getBookingsTotalBookingsCount();
   }),
   getBookings: adminProcedure
