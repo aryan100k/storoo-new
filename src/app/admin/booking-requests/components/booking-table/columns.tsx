@@ -1,20 +1,12 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { luggageTypeMap } from "@/lib/zod/booking";
-import { BookingDetails } from "@/server/drizzle/schema";
-import { ColumnDef } from "@tanstack/react-table";
-import { format } from "date-fns";
 import Link from "next/link";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import { format } from "date-fns";
+import { ColumnDef } from "@tanstack/react-table";
+import { BookingDetails } from "@/server/drizzle/schema";
+import { luggageTypeMap } from "@/lib/zod/booking";
+import { cn } from "@/lib/utils";
+import { BookingDetailsModal } from "./details-modal";
 
 export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
@@ -44,7 +36,7 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
     header: "Luggage",
     accessorKey: "luggageType",
-    accessorFn: (data) => luggageTypeMap[data.luggageType] || "",
+    accessorFn: (data) => luggageTypeMap[data.luggageType] || data.luggageType,
   },
   {
     header: "Status",
@@ -73,5 +65,12 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
     header: "Created At",
     accessorFn: (data) => (data.createdAt ? format(data.createdAt, "dd/MM/yyyy") : ""),
+  },
+  {
+    id: "actions",
+    header: "",
+    cell: ({ row }) => {
+      return <BookingDetailsModal booking={row.original} />;
+    },
   },
 ];
