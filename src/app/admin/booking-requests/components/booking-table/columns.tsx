@@ -12,6 +12,7 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
     header: "Name",
     accessorKey: "name",
+    cell: ({ row }) => <span className="whitespace-nowrap">{row.getValue("name")}</span>,
   },
   {
     header: "Contact",
@@ -36,7 +37,12 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
     header: "Luggage",
     accessorKey: "luggageType",
-    accessorFn: (data) => luggageTypeMap[data.luggageType] || data.luggageType,
+    cell: ({ row }) => {
+      const luggageType = row.getValue("luggageType") as keyof typeof luggageTypeMap;
+      return (
+        <span className="whitespace-nowrap">{luggageTypeMap[luggageType] || luggageType}</span>
+      );
+    },
   },
   {
     header: "Status",

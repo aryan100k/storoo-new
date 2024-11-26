@@ -8,7 +8,7 @@ import { adminRoutes } from "@/lib/routes";
 import { trpc } from "@/lib/trpc";
 import { Heading } from "../components/heading";
 
-const bookingPerPage = 5;
+const bookingPerPage = 8;
 
 const BookingRequestsPage = () => {
   const { data: totalBookingCount = 0, isLoading: totalBookingCountLoading } =
@@ -40,26 +40,24 @@ const BookingRequestsPage = () => {
 
       <Heading>Booking Requests</Heading>
 
-      <div>
-        <BookingTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
+      <BookingTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
 
-        <div className="flex justify-end mt-2 gap-2">
-          {!totalBookingCountLoading && (
-            <span className="text-xs">
-              Showing {bookings.length} of {totalBookingCount || 0}
-            </span>
-          )}
+      <div className="flex justify-end mt-2 gap-2">
+        {!totalBookingCountLoading && (
+          <span className="text-xs">
+            Showing {bookings.length} of {totalBookingCount || 0}
+          </span>
+        )}
 
-          <Button
-            size="sm"
-            className="ml-auto"
-            variant="outline"
-            onClick={() => fetchNextPage()}
-            disabled={isLoading || !hasMore}
-          >
-            Load More
-          </Button>
-        </div>
+        <Button
+          size="sm"
+          className="ml-auto"
+          variant="outline"
+          onClick={() => fetchNextPage()}
+          disabled={isLoading || !hasMore}
+        >
+          Load More
+        </Button>
       </div>
     </>
   );
