@@ -12,7 +12,7 @@ import {
   updateBookingStatus,
 } from "../helpers/booking";
 import { z } from "zod";
-import { bookingRequestSchema, bookingStatusSchema } from "@/lib/zod/booking";
+import { bookingStatusSchema } from "@/lib/zod/booking";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
