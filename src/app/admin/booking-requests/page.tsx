@@ -4,18 +4,25 @@ import { Button } from "@/components/ui/button";
 import { BookingTable } from "@/components/data-table";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { bookingColumns } from "./components/columns";
-import { adminRoutes } from "@/lib/routes";
-import { trpc } from "@/lib/trpc";
 import { Heading } from "../components/heading";
+import { StatusSelect, useStatus } from "./components/status-select";
+
+import { trpc } from "@/lib/trpc";
+import { adminRoutes } from "@/lib/routes";
 
 const bookingPerPage = 8;
 
 const BookingRequestsPage = () => {
+  const selectedStatus = useStatus();
+
   const { data: totalBookingCount = 0, isLoading: totalBookingCountLoading } =
-    trpc.getTotalBookingsCount.useQuery();
+    trpc.getTotalBookingsCount.useQuery({
+      status: selectedStatus,
+    });
   const { isLoading, data, fetchNextPage } = trpc.getBookings.useInfiniteQuery(
     {
       limit: bookingPerPage,
+      status: selectedStatus,
     },
     {
       initialCursor: 0,
@@ -37,7 +44,10 @@ const BookingRequestsPage = () => {
         ]}
       />
 
-      <Heading>Booking Requests</Heading>
+      <div className="flex justify-between flex-col md:flex-row">
+        <Heading>Booking Requests</Heading>
+        <StatusSelect />
+      </div>
 
       <BookingTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
 

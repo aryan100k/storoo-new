@@ -18,6 +18,7 @@ import { StorageDetails } from "@/server/drizzle/schema";
 
 export const UpdateStatusDropdown = (props: { bookingId: number; status?: string }) => {
   const [open, setOpen] = useState(false);
+
   const { status: loadingStatus, mutate: updateStatus } = trpc.updateListingStatus.useMutation({
     onSuccess: () => {
       toast("Status updated successfully");

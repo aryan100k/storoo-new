@@ -86,15 +86,22 @@ export const adminRouter = router({
       };
     }),
 
-  getTotalBookingsCount: adminProcedure.query(async () => {
-    return getBookingsTotalBookingsCount();
-  }),
+  getTotalBookingsCount: adminProcedure
+    .input(
+      z.object({
+        status: bookingStatusSchema.or(z.null()).optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      console.log(input);
+      return getBookingsTotalBookingsCount(input);
+    }),
   getBookings: adminProcedure
     .input(
       z.object({
         limit: z.number().optional(),
         cursor: z.number().optional(),
-        search: z.string().optional(),
+        status: bookingStatusSchema.or(z.null()).optional(),
       })
     )
     .query(async ({ input }) => {

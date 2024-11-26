@@ -1,4 +1,4 @@
-import { and, count, eq, gt, lt, or, sql } from "drizzle-orm";
+import { count, eq } from "drizzle-orm";
 import { db } from "@/server/drizzle/db";
 import { BookingRequestSchema } from "@/lib/zod/booking";
 import { Booking, bookingTable } from "@/server/drizzle/schema";
@@ -31,17 +31,30 @@ export const addNewBookingRequest = async (booking: BookingRequestSchema, userId
   return bookingId.insertedId;
 };
 
-export const getBookingsTotalBookingsCount = async () => {
-  const [query] = await db
+export const getBookingsTotalBookingsCount = async (config: {
+  status?: Booking["status"] | null;
+}) => {
+  const query = db
     .select({
       count: count(bookingTable.id),
     })
     .from(bookingTable);
 
-  return query.count || 0;
+  console.log(config);
+  if (config.status) {
+    query.where(eq(bookingTable.status, config.status));
+  }
+
+  const [res] = await query;
+
+  return res.count || 0;
 };
 
-export const getBookings = async (config: { limit?: number; cursor?: number; search?: string }) => {
+export const getBookings = async (config: {
+  limit?: number;
+  cursor?: number;
+  status?: Booking["status"] | null;
+}) => {
   config.cursor = config.cursor || 0;
   config.limit = config.limit || 5;
 
@@ -49,10 +62,7 @@ export const getBookings = async (config: { limit?: number; cursor?: number; sea
     orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     limit: config.limit,
     offset: config.cursor,
-    where: (table, { sql }) =>
-      config.search
-        ? or(sql`to_tsvector('simple', ${table.name}) @@ to_tsquery('simple', ${config.search})`)
-        : undefined,
+    where: (table, { eq }) => (config.status ? eq(table.status, config.status) : undefined),
   });
 
   return bookings;

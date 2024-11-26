@@ -18,6 +18,7 @@ import { StatusChip } from "@/components/ui/status-chip";
 
 export const UpdateStatusDropdown = (props: { bookingId: number; status?: string }) => {
   const [open, setOpen] = useState(false);
+
   const { status: loadingStatus, mutate: updateBookingStatus } =
     trpc.updateBookingStatus.useMutation({
       onSuccess: () => {
