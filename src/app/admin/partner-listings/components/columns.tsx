@@ -10,7 +10,7 @@ import { StorageDetails } from "@/server/drizzle/schema";
 import { Button } from "@/components/ui/button";
 import { adminRoutes } from "@/lib/routes";
 
-export const bookingColumns: ColumnDef<StorageDetails>[] = [
+export const listingColumns: ColumnDef<StorageDetails>[] = [
   {
     header: "Business Name",
     accessorKey: "businessName",

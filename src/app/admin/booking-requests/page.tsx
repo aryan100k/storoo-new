@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BookingTable } from "@/components/data-table";
+import { DataTable } from "@/components/data-table";
 import { Breadcrumbs } from "../components/breadcrumbs";
 import { bookingColumns } from "./components/columns";
 import { Heading } from "../components/heading";
@@ -49,7 +49,7 @@ const BookingRequestsPage = () => {
         <StatusSelect />
       </div>
 
-      <BookingTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
+      <DataTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
 
       <div className="flex justify-end mt-2 gap-2">
         {!totalBookingCountLoading && (

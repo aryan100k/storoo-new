@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BookingTable } from "@/components/data-table";
+import { DataTable } from "@/components/data-table";
 import { Breadcrumbs } from "../components/breadcrumbs";
-import { bookingColumns } from "./components/columns";
+import { listingColumns } from "./components/columns";
 import { Heading } from "../components/heading";
 import { StatusSelect, useStatus } from "./components/status-select";
 
@@ -30,8 +30,8 @@ const PartnerListingsPage = () => {
     }
   );
 
-  const bookings = data?.pages.flatMap((page) => page) ?? [];
-  const hasMore = data?.pages.length === 0 || bookings.length < totalListingCount;
+  const listings = data?.pages.flatMap((page) => page) ?? [];
+  const hasMore = data?.pages.length === 0 || listings.length < totalListingCount;
 
   return (
     <>
@@ -49,12 +49,12 @@ const PartnerListingsPage = () => {
         <StatusSelect />
       </div>
 
-      <BookingTable columns={bookingColumns} data={bookings} isLoading={isLoading} />
+      <DataTable columns={listingColumns} data={listings} isLoading={isLoading} />
 
       <div className="flex justify-end mt-2 gap-2">
         {!totalListingCountLoading && (
           <span className="text-xs">
-            Showing {bookings.length} of {totalListingCount || 0}
+            Showing {listings.length} of {totalListingCount || 0}
           </span>
         )}
 

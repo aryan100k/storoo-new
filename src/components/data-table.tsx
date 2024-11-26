@@ -17,7 +17,7 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
 }
 
-export const BookingTable = <TData, TValue>({
+export const DataTable = <TData, TValue>({
   columns,
   data,
   isLoading,
