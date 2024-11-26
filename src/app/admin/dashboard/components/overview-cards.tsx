@@ -1,7 +1,7 @@
 "use client";
 
 import { trpc } from "@/lib/trpc";
-import { BookOpen, Loader2, Package, Users } from "lucide-react";
+import { BookOpen, Package, Users } from "lucide-react";
 
 export const OverviewCards = () => {
   const { data: pendingCount, isLoading: pendingCountLoading } =

@@ -88,13 +88,15 @@ export const adminRouter = router({
 
   getTotalBookingsCount: adminProcedure
     .input(
-      z.object({
-        status: bookingStatusSchema.or(z.null()).optional(),
-      })
+      z
+        .object({
+          status: bookingStatusSchema.or(z.null()).optional(),
+        })
+        .optional()
     )
     .query(async ({ input }) => {
       console.log(input);
-      return getBookingsTotalBookingsCount(input);
+      return getBookingsTotalBookingsCount(input || {});
     }),
   getBookings: adminProcedure
     .input(
