@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
-import { BookingDetails } from "@/server/drizzle/schema";
-import { luggageTypeMap } from "@/lib/zod/booking";
+
 import { BookingDetailsModal } from "./details-modal";
 import { StatusDropdown } from "./status-dropdown";
+import { DeleteModal } from "./delete-modal";
+import { BookingDetails } from "@/server/drizzle/schema";
+import { luggageTypeMap } from "@/lib/zod/booking";
 
 export const bookingColumns: ColumnDef<BookingDetails>[] = [
   {
@@ -63,7 +65,12 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
     id: "actions",
     header: "",
     cell: ({ row }) => {
-      return <BookingDetailsModal booking={row.original} />;
+      return (
+        <div className="flex items-center gap-2">
+          <BookingDetailsModal booking={row.original} />
+          <DeleteModal booking={row.original} />
+        </div>
+      );
     },
   },
 ];

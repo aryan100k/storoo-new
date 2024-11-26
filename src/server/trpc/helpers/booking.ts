@@ -64,3 +64,7 @@ export const updateBookingStatus = async (bookingId: number, status: Booking["st
     .set({ status, updatedAt: new Date() })
     .where(eq(bookingTable.id, bookingId));
 };
+
+export const deleteBooking = async (bookingId: number) => {
+  return db.delete(bookingTable).where(eq(bookingTable.id, bookingId));
+};

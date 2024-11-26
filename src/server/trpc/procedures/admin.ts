@@ -6,6 +6,7 @@ import {
   getListingCountByStatus,
 } from "../helpers/listing";
 import {
+  deleteBooking,
   getBookings,
   getBookingsTotalBookingsCount,
   getLatestBookingRequest,
@@ -82,4 +83,10 @@ export const adminRouter = router({
         status: "success",
       };
     }),
+  deleteBooking: adminProcedure.input(z.number()).mutation(async ({ input }) => {
+    await deleteBooking(input);
+    return {
+      status: "success",
+    };
+  }),
 });
