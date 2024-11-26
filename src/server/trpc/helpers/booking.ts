@@ -45,11 +45,6 @@ export const getBookings = async (config: { limit?: number; cursor?: number; sea
   config.cursor = config.cursor || 0;
   config.limit = config.limit || 5;
 
-  console.log({
-    limit: config.limit,
-    cursor: config.cursor,
-  });
-
   const bookings = await db.query.bookingTable.findMany({
     orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     limit: config.limit,
