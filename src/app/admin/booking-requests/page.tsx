@@ -16,7 +16,6 @@ const BookingRequestsPage = () => {
   const { isLoading, data, fetchNextPage } = trpc.getBookings.useInfiniteQuery(
     {
       limit: bookingPerPage,
-      search: "",
     },
     {
       initialCursor: 0,

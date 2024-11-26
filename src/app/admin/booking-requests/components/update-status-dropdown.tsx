@@ -9,32 +9,31 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { StatusChip } from "@/components/ui/status-chip";
 import { showErrorToast } from "@/lib/api-errors";
 import { trpc } from "@/lib/trpc";
+import { BookingStatusSchema } from "@/lib/zod/booking";
 import { getQueryKey } from "@trpc/react-query";
 import { queryClient } from "@/app/(public)/components/trpc-provider";
-import { StorageDetails } from "@/server/drizzle/schema";
+import { StatusChip } from "@/components/ui/status-chip";
 
-export const StatusDropdown = (props: { bookingId: number; status?: string }) => {
+export const UpdateStatusDropdown = (props: { bookingId: number; status?: string }) => {
   const [open, setOpen] = useState(false);
-  const { status: loadingStatus, mutate: updateStatus } = trpc.updateListingStatus.useMutation({
-    onSuccess: () => {
-      toast("Status updated successfully");
-      queryClient.refetchQueries({
-        queryKey: getQueryKey(trpc.getListingsByStatus),
-      });
-    },
-    onError: (error) => {
-      showErrorToast(error.message);
-    },
-  });
+  const { status: loadingStatus, mutate: updateBookingStatus } =
+    trpc.updateBookingStatus.useMutation({
+      onSuccess: () => {
+        toast("Status updated successfully");
+        queryClient.refetchQueries({
+          queryKey: getQueryKey(trpc.getBookings),
+        });
+      },
+      onError: (error) => {
+        showErrorToast(error.message);
+      },
+    });
   const status = props.status || "pending";
 
-  const handleUpdateStatus = (status: StorageDetails["approvalStatus"]) => {
-    if (!status) return;
-
-    updateStatus({ status, id: props.bookingId });
+  const handleUpdateStatus = (status: BookingStatusSchema) => {
+    updateBookingStatus({ status, bookingId: props.bookingId });
   };
 
   return (
@@ -46,7 +45,7 @@ export const StatusDropdown = (props: { bookingId: number; status?: string }) =>
       }}
     >
       <DropdownMenuTrigger>
-        <StatusChip status={status as StorageDetails["approvalStatus"]}>{status}</StatusChip>
+        <StatusChip status={status as BookingStatusSchema}>{status}</StatusChip>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem
@@ -63,9 +62,15 @@ export const StatusDropdown = (props: { bookingId: number; status?: string }) =>
         </DropdownMenuItem>
         <DropdownMenuItem
           disabled={loadingStatus === "pending"}
-          onClick={() => handleUpdateStatus("pending")}
+          onClick={() => handleUpdateStatus("completed")}
         >
-          Pending
+          Complete
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={loadingStatus === "pending"}
+          onClick={() => handleUpdateStatus("cancelled")}
+        >
+          Cancel
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

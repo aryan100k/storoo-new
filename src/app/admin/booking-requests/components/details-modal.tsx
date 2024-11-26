@@ -11,7 +11,7 @@ import { BookingDetails } from "@/server/drizzle/schema";
 import Link from "next/link";
 import { format } from "date-fns";
 import { luggageTypeMap } from "@/lib/zod/booking";
-import { StatusDropdown } from "./status-dropdown";
+import { UpdateStatusDropdown } from "./update-status-dropdown";
 import { Separator } from "@/components/ui/separator";
 import { Fragment } from "react";
 
@@ -44,7 +44,7 @@ export const BookingDetailsModal = (props: { booking: BookingDetails }) => {
     {
       title: "Status",
       value: !!props.booking.id && (
-        <StatusDropdown bookingId={props.booking.id} status={props.booking.status} />
+        <UpdateStatusDropdown bookingId={props.booking.id} status={props.booking.status} />
       ),
     },
     {

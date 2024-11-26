@@ -4,7 +4,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { StatusDropdown } from "./status-dropdown";
+import { UpdateStatusDropdown } from "./update-status-dropdown";
 import { DeleteModal } from "./delete-modal";
 import { StorageDetails } from "@/server/drizzle/schema";
 import { Button } from "@/components/ui/button";
@@ -58,7 +58,9 @@ export const bookingColumns: ColumnDef<StorageDetails>[] = [
         return;
       }
 
-      return <StatusDropdown bookingId={row.original.id} status={row.original.approvalStatus} />;
+      return (
+        <UpdateStatusDropdown bookingId={row.original.id} status={row.original.approvalStatus} />
+      );
     },
   },
   {

@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { BookingDetailsModal } from "./details-modal";
-import { StatusDropdown } from "./status-dropdown";
+import { UpdateStatusDropdown } from "./update-status-dropdown";
 import { DeleteModal } from "./delete-modal";
 import { BookingDetails } from "@/server/drizzle/schema";
 import { luggageTypeMap } from "@/lib/zod/booking";
@@ -54,7 +54,7 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
         return;
       }
 
-      return <StatusDropdown bookingId={row.original.id} status={row.original.status} />;
+      return <UpdateStatusDropdown bookingId={row.original.id} status={row.original.status} />;
     },
   },
   {
