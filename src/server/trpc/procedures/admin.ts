@@ -5,7 +5,11 @@ import {
   getLatestPartnerUpdate,
   getListingCountByStatus,
 } from "../helpers/listing";
-import { getLatestBookingRequest } from "../helpers/booking";
+import {
+  getBookings,
+  getBookingsTotalBookingsCount,
+  getLatestBookingRequest,
+} from "../helpers/booking";
 import { z } from "zod";
 
 export const adminProcedure = procedure.use(async (opts) => {
@@ -47,4 +51,19 @@ export const adminRouter = router({
   getLatestBookingRequest: adminProcedure.query(() => {
     return getLatestBookingRequest();
   }),
+
+  getBookingsTotalBookingsCount: adminProcedure.query(async () => {
+    return getBookingsTotalBookingsCount();
+  }),
+  getBookings: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().optional(),
+        cursor: z.number().optional(),
+        search: z.string().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      return getBookings(input);
+    }),
 });

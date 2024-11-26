@@ -1,3 +1,4 @@
+import { and, count, eq, gt, or, sql } from "drizzle-orm";
 import { db } from "@/server/drizzle/db";
 import { BookingRequestSchema } from "@/lib/zod/booking";
 import { Booking, bookingTable } from "@/server/drizzle/schema";
@@ -28,4 +29,29 @@ export const addNewBookingRequest = async (booking: BookingRequestSchema, userId
     .returning({ insertedId: bookingTable.id });
 
   return bookingId.insertedId;
+};
+
+export const getBookingsTotalBookingsCount = async () => {
+  const [query] = await db
+    .select({
+      count: count(bookingTable.id),
+    })
+    .from(bookingTable);
+
+  return query.count || 0;
+};
+
+export const getBookings = async (config: { limit?: number; cursor?: number; search?: string }) => {
+  const bookings = await db.query.bookingTable.findMany({
+    orderBy: (fields, { asc }) => [asc(fields.createdAt)],
+    limit: config.limit,
+    offset: config.cursor,
+    where: (table, { gt, sql, and }) =>
+      or(
+        gt(table.id, config.cursor || 0),
+        or(sql`name ILIKE ${config.search}`, sql`phone ILIKE ${config.search}`)
+      ),
+  });
+
+  return bookings;
 };

@@ -8,10 +8,10 @@ export const OverviewCards = () => {
     trpc.getListingCountByStatus.useQuery({ status: "pending" });
   const { data: approvedCount, isLoading: approvedCountLoading } =
     trpc.getListingCountByStatus.useQuery({ status: "approved" });
-  const { data: totalCount, isLoading: totalCountLoading } =
-    trpc.getListingCountByStatus.useQuery();
+  const { data: totalBookingCount, isLoading: totalBookingCountLoading } =
+    trpc.getBookingsTotalBookingsCount.useQuery();
 
-  const isLoading = pendingCountLoading || approvedCountLoading || totalCountLoading;
+  const isLoading = pendingCountLoading || approvedCountLoading || totalBookingCountLoading;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -21,7 +21,7 @@ export const OverviewCards = () => {
           <BookOpen className="h-4 w-4 text-muted-foreground" />
         </div>
         <span className="text-xl font-bold">
-          {isLoading ? <span className="text-muted-foreground">...</span> : totalCount}
+          {isLoading ? <span className="text-muted-foreground">...</span> : totalBookingCount}
         </span>
       </div>
 

@@ -142,3 +142,4 @@ export const bookingTable = pgTable("booking", {
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
 export type User = typeof userTable.$inferInsert;
 export type Booking = typeof bookingTable.$inferInsert;
+export type BookingDetails = typeof bookingTable.$inferInsert;
