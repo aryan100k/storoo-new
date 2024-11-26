@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { BookingTable } from "@/components/data-table";
 import { Breadcrumbs } from "../components/breadcrumbs";
-import { BookingTable } from "./components/booking-table";
-import { bookingColumns } from "./components/booking-table/columns";
+import { bookingColumns } from "./components/columns";
 import { adminRoutes } from "@/lib/routes";
 import { trpc } from "@/lib/trpc";
 import { Heading } from "../components/heading";
