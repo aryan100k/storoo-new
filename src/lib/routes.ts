@@ -13,4 +13,5 @@ export const adminRoutes = {
   bookingRequests: "/admin/booking-requests",
   storagePoints: "/admin/storage-points",
   partnerListings: "/admin/partner-listings",
+  partnerListingDetails: (id: string | number) => `/admin/partner-listings/${id}`,
 };

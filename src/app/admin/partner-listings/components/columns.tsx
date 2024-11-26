@@ -4,17 +4,21 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { BookingDetailsModal } from "./details-modal";
 import { StatusDropdown } from "./status-dropdown";
 import { DeleteModal } from "./delete-modal";
-import { BookingDetails } from "@/server/drizzle/schema";
-import { luggageTypeMap } from "@/lib/zod/booking";
+import { StorageDetails } from "@/server/drizzle/schema";
+import { Button } from "@/components/ui/button";
+import { adminRoutes } from "@/lib/routes";
 
-export const bookingColumns: ColumnDef<BookingDetails>[] = [
+export const bookingColumns: ColumnDef<StorageDetails>[] = [
+  {
+    header: "Business Name",
+    accessorKey: "businessName",
+    cell: ({ row }) => <span className="whitespace-nowrap">{row.getValue("businessName")}</span>,
+  },
   {
     header: "Name",
-    accessorKey: "name",
-    cell: ({ row }) => <span className="whitespace-nowrap">{row.getValue("name")}</span>,
+    accessorKey: "contactName",
   },
   {
     header: "Contact",
@@ -29,32 +33,32 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
     },
   },
   {
-    header: "Start Date",
-    accessorFn: (data) => format(data.startDate, "dd/MM/yyyy"),
-  },
-  {
-    header: "End Date",
-    accessorFn: (data) => format(data.endDate, "dd/MM/yyyy"),
-  },
-  {
-    header: "Luggage",
-    accessorKey: "luggageType",
+    header: "Address",
+    accessorKey: "locality",
     cell: ({ row }) => {
-      const luggageType = row.getValue("luggageType") as keyof typeof luggageTypeMap;
       return (
-        <span className="whitespace-nowrap">{luggageTypeMap[luggageType] || luggageType}</span>
+        <span className="whitespace-nowrap capitalize">
+          {row.original.locality}, {row.original.city}
+        </span>
       );
     },
   },
   {
+    header: "Type",
+    accessorKey: "spaceType",
+    cell: ({ row }) => {
+      return <span className="whitespace-nowrap capitalize">{row.original.spaceType}</span>;
+    },
+  },
+  {
     header: "Status",
-    accessorKey: "status",
+    accessorKey: "approvalStatus",
     cell: ({ row }) => {
       if (!row.original.id) {
         return;
       }
 
-      return <StatusDropdown bookingId={row.original.id} status={row.original.status} />;
+      return <StatusDropdown bookingId={row.original.id} status={row.original.approvalStatus} />;
     },
   },
   {
@@ -67,8 +71,10 @@ export const bookingColumns: ColumnDef<BookingDetails>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2">
-          <BookingDetailsModal booking={row.original} />
-          <DeleteModal booking={row.original} />
+          <Button variant="outline" size="sm" asChild>
+            <Link href={adminRoutes.partnerListingDetails(row.original.id!)}>View</Link>
+          </Button>
+          <DeleteModal listing={row.original} />
         </div>
       );
     },

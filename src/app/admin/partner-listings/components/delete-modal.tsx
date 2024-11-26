@@ -15,19 +15,19 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash } from "lucide-react";
-import { BookingDetails } from "@/server/drizzle/schema";
+import { StorageDetails } from "@/server/drizzle/schema";
 import { trpc } from "@/lib/trpc";
 import { queryClient } from "@/app/(public)/components/trpc-provider";
 import { showErrorToast } from "@/lib/api-errors";
 
-export const DeleteModal = (props: { booking: BookingDetails }) => {
+export const DeleteModal = (props: { listing: StorageDetails }) => {
   const [open, setOpen] = useState(false);
-  const { status, mutate } = trpc.deleteBooking.useMutation({
+  const { status, mutate } = trpc.deleteStorageListing.useMutation({
     onSuccess: () => {
       setOpen(false);
-      toast("Booking deleted successfully");
+      toast("Listing deleted successfully");
       queryClient.refetchQueries({
-        queryKey: getQueryKey(trpc.getBookings),
+        queryKey: getQueryKey(trpc.getListingsByStatus),
       });
     },
     onError: (error) => {
@@ -35,7 +35,9 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
     },
   });
 
-  const loading = status === "pending" || status === "success";
+  const loading = status === "pending";
+
+  if (!props.listing.id) return null;
 
   return (
     <AlertDialog
@@ -55,7 +57,7 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the booking by{" "}
-            {props.booking.name}.
+            {props.listing.businessName}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -68,7 +70,7 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
               disabled={loading}
               onClick={(e) => {
                 e.preventDefault();
-                mutate(props.booking.id!);
+                mutate(props.listing.id!);
               }}
             >
               Delete

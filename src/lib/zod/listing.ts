@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const listingStatusSchema = z.enum(["pending", "approved", "rejected"]);
+
 export const listingSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   contactName: z.string().min(1, "Contact name is required"),

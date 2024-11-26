@@ -1,9 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { procedure, router } from "..";
 import {
+  deleteStorageListing,
   getLatestCapacityUpdate,
   getLatestPartnerUpdate,
   getListingCountByStatus,
+  getStorageListings,
+  updateStorageListingStatus,
 } from "../helpers/listing";
 import {
   deleteBooking,
@@ -14,6 +17,7 @@ import {
 } from "../helpers/booking";
 import { z } from "zod";
 import { bookingStatusSchema } from "@/lib/zod/booking";
+import { listingStatusSchema } from "@/lib/zod/listing";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
@@ -36,7 +40,7 @@ export const adminRouter = router({
     .input(
       z
         .object({
-          status: z.enum(["pending", "approved", "rejected"]).optional(),
+          status: listingStatusSchema.optional(),
         })
         .optional()
     )
@@ -54,6 +58,33 @@ export const adminRouter = router({
   getLatestBookingRequest: adminProcedure.query(() => {
     return getLatestBookingRequest();
   }),
+
+  getListingsByStatus: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().optional(),
+        cursor: z.number().optional(),
+        status: listingStatusSchema.optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      return getStorageListings(input);
+    }),
+  deleteStorageListing: adminProcedure.input(z.number()).mutation(async ({ input }) => {
+    await deleteStorageListing(input);
+    return {
+      status: "success",
+    };
+  }),
+  updateListingStatus: adminProcedure
+    .input(z.object({ id: z.number(), status: listingStatusSchema }))
+    .mutation(async ({ input }) => {
+      await updateStorageListingStatus(input.id, input.status);
+
+      return {
+        status: "success",
+      };
+    }),
 
   getTotalBookingsCount: adminProcedure.query(async () => {
     return getBookingsTotalBookingsCount();

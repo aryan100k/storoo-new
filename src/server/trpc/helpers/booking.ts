@@ -65,6 +65,6 @@ export const updateBookingStatus = async (bookingId: number, status: Booking["st
     .where(eq(bookingTable.id, bookingId));
 };
 
-export const deleteBooking = async (bookingId: number) => {
+export const deleteBooking = (bookingId: number) => {
   return db.delete(bookingTable).where(eq(bookingTable.id, bookingId));
 };

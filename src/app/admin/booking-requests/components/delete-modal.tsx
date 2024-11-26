@@ -35,7 +35,7 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
     },
   });
 
-  const loading = status === "pending" || status === "success";
+  const loading = status === "pending";
 
   return (
     <AlertDialog

@@ -72,6 +72,38 @@ export const getAvailableListings = async () => {
   });
 };
 
+export const getStorageListings = async (config: {
+  limit?: number;
+  cursor?: number;
+  status?: StorageDetails["approvalStatus"];
+}) => {
+  config.cursor = config.cursor || 0;
+  config.limit = config.limit || 5;
+
+  const query = db.query.storageDetailsTable.findMany({
+    orderBy: (fields, { desc }) => [desc(fields.createdAt)],
+    limit: config.limit,
+    offset: config.cursor,
+    where: (table, { eq }) => (config.status ? eq(table.approvalStatus, config.status) : undefined),
+  });
+
+  return query;
+};
+
+export const deleteStorageListing = (id: number) => {
+  return db.delete(storageDetailsTable).where(eq(storageDetailsTable.id, id));
+};
+
+export const updateStorageListingStatus = (
+  id: number,
+  status: StorageDetails["approvalStatus"]
+) => {
+  return db
+    .update(storageDetailsTable)
+    .set({ approvalStatus: status })
+    .where(eq(storageDetailsTable.id, id));
+};
+
 export const getListingCountByStatus = (status: StorageDetails["approvalStatus"]) => {
   const query = db
     .select({
