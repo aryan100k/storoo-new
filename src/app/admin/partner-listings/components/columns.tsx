@@ -59,7 +59,7 @@ export const bookingColumns: ColumnDef<StorageDetails>[] = [
       }
 
       return (
-        <UpdateStatusDropdown bookingId={row.original.id} status={row.original.approvalStatus} />
+        <UpdateStatusDropdown listingId={row.original.id} status={row.original.approvalStatus} />
       );
     },
   },

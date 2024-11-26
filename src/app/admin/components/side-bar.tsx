@@ -77,7 +77,7 @@ export const AdminSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="bg-background">
+      <SidebarFooter className="bg-background px-4 pb-4">
         <LogoutBtn />
       </SidebarFooter>
     </Sidebar>

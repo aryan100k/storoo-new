@@ -137,3 +137,12 @@ export const getLatestPartnerUpdate = async () => {
 
   return res || null;
 };
+
+export const getListingDetails = async (id: number) => {
+  return db.query.storageDetailsTable.findFirst({
+    where: (table, { eq }) => eq(table.id, id),
+    with: {
+      capacity: true,
+    },
+  });
+};

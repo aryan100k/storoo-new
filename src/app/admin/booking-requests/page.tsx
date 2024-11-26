@@ -45,7 +45,7 @@ const BookingRequestsPage = () => {
       />
 
       <div className="flex justify-between flex-col md:flex-row">
-        <Heading>Booking Requests</Heading>
+        <Heading className="mb-0">Booking Requests</Heading>
         <StatusSelect />
       </div>
 

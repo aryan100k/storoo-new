@@ -15,13 +15,15 @@ type Status = keyof typeof statusClass;
 export const StatusChip = (
   props: PropsWithChildren<{
     status?: Status;
+    className?: string;
   }>
 ) => {
   return (
     <span
       className={cn(
         "text-xs border px-2 py-0.5 bg-muted rounded-full",
-        statusClass[props.status!] || statusClass.other
+        statusClass[props.status!] || statusClass.other,
+        props.className
       )}
     >
       {props.children}
