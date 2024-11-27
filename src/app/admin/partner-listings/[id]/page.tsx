@@ -19,8 +19,8 @@ import { UpdateStatusDropdown } from "../components/update-status-dropdown";
 import { getListingDetails } from "@/server/trpc/helpers/listing";
 import { adminRoutes } from "@/lib/routes";
 
-const ListingDetailsPage = async ({ params }: { params: { id: string } }) => {
-  const data = await getListingDetails(Number(params.id));
+const ListingDetailsPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const data = await getListingDetails(Number((await params).id));
 
   if (!data) {
     notFound();
@@ -36,7 +36,7 @@ const ListingDetailsPage = async ({ params }: { params: { id: string } }) => {
           },
           {
             label: "Listings Details",
-            href: adminRoutes.partnerListingDetails(params.id),
+            href: adminRoutes.partnerListingDetails(data.id),
           },
         ]}
       />
