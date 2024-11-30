@@ -1,7 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -11,147 +21,170 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PhoneNumberInput } from "@/components/phone-number-input";
+import { Loader2 } from "lucide-react";
+
+import { trpc } from "@/lib/trpc";
+import { routes } from "@/lib/routes";
+import { showErrorToast } from "@/lib/api-errors";
+import { partnerRequestSchema, PartnerRequestSchema } from "@/lib/zod/partner-request";
 
 export const PartnerRequestForm = () => {
-  const [formData, setFormData] = useState({
-    businessName: "",
-    contactPerson: "",
-    phone: "",
-    email: "",
-    location: "",
-    businessType: "",
-    storageSpace: "",
-    monthlyVisitors: "",
+  const router = useRouter();
+  const { status, mutate: sendRequest } = trpc.addPartnershipRequest.useMutation({
+    onSuccess: () => {
+      router.push(routes.partnerThankYou);
+    },
+    onError: (error) => {
+      showErrorToast(error.message);
+    },
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  const form = useForm<PartnerRequestSchema>({
+    resolver: zodResolver(partnerRequestSchema),
+  });
+
+  const handleSubmit = (values: PartnerRequestSchema) => {
+    sendRequest(values);
   };
 
-  const handleSelectChange = (name: string, value: string) => {
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-  };
+  const isLoading = status === "pending" || status === "success";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="businessName" className="block text-sm font-medium text-gray-700 mb-1">
-          Business Name
-        </label>
-        <Input
-          id="businessName"
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="grid md:grid-cols-2 grid-cols-1 gap-4 border shadow-sm p-3 rounded-md"
+      >
+        <FormField
+          control={form.control}
           name="businessName"
-          value={formData.businessName}
-          onChange={handleInputChange}
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="contactPerson" className="block text-sm font-medium text-gray-700 mb-1">
-          Contact Person
-        </label>
-        <Input
-          id="contactPerson"
+
+        <FormField
+          control={form.control}
           name="contactPerson"
-          value={formData.contactPerson}
-          onChange={handleInputChange}
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contact Person</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-          Phone Number
-        </label>
-        <Input
-          id="phone"
-          name="phone"
-          type="tel"
-          value={formData.phone}
-          onChange={handleInputChange}
-          required
+
+        <FormField
+          control={form.control}
+          name="phoneNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <PhoneNumberInput {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email
-        </label>
-        <Input
-          id="email"
+
+        <FormField
+          control={form.control}
           name="email"
-          type="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-          Location
-        </label>
-        <Input
-          id="location"
+
+        <FormField
+          control={form.control}
           name="location"
-          value={formData.location}
-          onChange={handleInputChange}
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Location</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="businessType" className="block text-sm font-medium text-gray-700 mb-1">
-          Business Type
-        </label>
-        <Select
+
+        <FormField
+          control={form.control}
           name="businessType"
-          onValueChange={(value) => handleSelectChange("businessType", value)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select business type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="hotel">Hotel / Hostel</SelectItem>
-            <SelectItem value="retail">Retail Store</SelectItem>
-            <SelectItem value="cafe">Cafe / Restaurant</SelectItem>
-            <SelectItem value="souvenir">Souvenir Shop</SelectItem>
-            <SelectItem value="local">Local Business</SelectItem>
-            <SelectItem value="tourist">Tourist Information Center</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div>
-        <label htmlFor="storageSpace" className="block text-sm font-medium text-gray-700 mb-1">
-          Available Storage Space (sqft)
-        </label>
-        <Input
-          id="storageSpace"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Business Type</FormLabel>
+              <FormControl>
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select business type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="hotel">Hotel / Hostel</SelectItem>
+                    <SelectItem value="retail">Retail Store</SelectItem>
+                    <SelectItem value="cafe">Cafe / Restaurant</SelectItem>
+                    <SelectItem value="souvenir">Souvenir Shop</SelectItem>
+                    <SelectItem value="local">Local Business</SelectItem>
+                    <SelectItem value="tourist">Tourist Information Center</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="storageSpace"
-          type="number"
-          value={formData.storageSpace}
-          onChange={handleInputChange}
-          required
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Available Storage Space (sqft)</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <label htmlFor="monthlyVisitors" className="block text-sm font-medium text-gray-700 mb-1">
-          Current Monthly Visitors
-        </label>
-        <Input
-          id="monthlyVisitors"
-          name="monthlyVisitors"
-          type="number"
-          value={formData.monthlyVisitors}
-          onChange={handleInputChange}
-          required
+
+        <FormField
+          control={form.control}
+          name="currentMonthlyVisitors"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Current Monthly Visitors</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <Button type="submit" className="w-full bg-[#1a73e8] text-white hover:bg-blue-700">
-        Apply Now
-      </Button>
-    </form>
+
+        <Button disabled={isLoading} type="submit" variant="brand" className="col-span-full mt-2">
+          Apply Now
+          {isLoading && <Loader2 className="animate-spin" />}
+        </Button>
+      </form>
+    </Form>
   );
 };

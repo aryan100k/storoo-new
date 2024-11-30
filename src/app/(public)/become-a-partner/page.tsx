@@ -27,7 +27,7 @@ const BecomeAPartner = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-brand text-white py-20 px-4 relative overflow-hidden">
+        <section className="bg-brand text-white py-20 relative overflow-hidden">
           <div className="container mx-auto relative z-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Turn Your Space into Profit with Storoo
@@ -98,7 +98,7 @@ const BecomeAPartner = () => {
         </section> */}
 
         {/* Benefits Grid */}
-        <section className="py-20 px-4 bg-background">
+        <section className="py-20 bg-background">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">Why Partner with Storoo</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -110,7 +110,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* How It Works */}
-        <section className="py-20 px-4 bg-[#e8f0fe]">
+        <section className="py-20 bg-[#e8f0fe]">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">How It Works</h2>
             <div className="flex flex-col md:flex-row justify-between items-center md:items-start space-y-8 md:space-y-0 md:space-x-4">
@@ -128,7 +128,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* Partner Success Stories */}
-        <section className="py-20 px-4 bg-background">
+        <section className="py-20 bg-background">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">Partner Success Stories</h2>
             <div className="flex flex-wrap justify-center gap-8">
@@ -147,7 +147,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* Business Types Section */}
-        <section className="py-20 px-4 bg-[#e8f0fe]">
+        <section className="py-20 bg-[#e8f0fe]">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">Perfect for</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -159,7 +159,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* Partner Requirements */}
-        <section className="py-20 px-4 bg-background">
+        <section className="py-20 bg-background">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">Partner Requirements</h2>
             <div className="max-w-2xl mx-auto space-y-4">
@@ -171,7 +171,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 px-4 bg-[#e8f0fe]">
+        <section className="py-20 bg-[#e8f0fe]">
           <div className="container mx-auto">
             <h2 className="text-2xl font-semibold text-center mb-12">Frequently Asked Questions</h2>
             <Accordion type="single" collapsible className="w-full max-w-2xl mx-auto">
@@ -186,7 +186,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* Application Form */}
-        <section className="py-20 px-4 bg-background" id="apply-now">
+        <section className="py-20 bg-background" id="apply-now">
           <div className="container mx-auto max-w-2xl">
             <h2 className="text-2xl font-semibold text-center mb-12">Become a Storoo Partner</h2>
 

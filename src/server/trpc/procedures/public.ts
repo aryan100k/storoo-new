@@ -10,6 +10,7 @@ import { lucia } from "@/server/lucia";
 import { listingSchema } from "@/lib/zod/listing";
 import { loginSchema, signUpSchema } from "@/lib/zod/auth";
 import { bookingRequestSchema } from "@/lib/zod/booking";
+import { partnerRequestSchema } from "@/lib/zod/partner-request";
 
 export const publicRouter = router({
   test: procedure.query(async () => {
@@ -97,6 +98,14 @@ export const publicRouter = router({
     return {
       status: "success",
       bookingId,
+    };
+  }),
+
+  addPartnershipRequest: procedure.input(partnerRequestSchema).mutation(async ({ input, ctx }) => {
+    console.log(input);
+
+    return {
+      status: "success",
     };
   }),
 });
