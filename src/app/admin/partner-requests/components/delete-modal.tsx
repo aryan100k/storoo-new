@@ -30,7 +30,7 @@ export const DeleteModal = (props: { request: PartnershipRequestDetails }) => {
         queryKey: getQueryKey(trpc.getPartnershipRequests),
       });
       queryClient.refetchQueries({
-        queryKey: getQueryKey(trpc.getTotalPartnershipRequests),
+        queryKey: getQueryKey(trpc.getTotalPartnershipRequestsByRequest),
       });
     },
     onError: (error) => {
