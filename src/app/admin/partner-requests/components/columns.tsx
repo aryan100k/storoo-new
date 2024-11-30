@@ -4,9 +4,9 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { PartnershipRequest } from "@/server/drizzle/schema";
+import { PartnershipRequestDetails } from "@/server/drizzle/schema";
 
-export const requestsColumns: ColumnDef<PartnershipRequest>[] = [
+export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   {
     header: "Business Name",
     accessorKey: "businessName",

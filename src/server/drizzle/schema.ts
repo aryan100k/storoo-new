@@ -156,6 +156,7 @@ export type StorageDetails = typeof storageDetailsTable.$inferInsert;
 export type User = typeof userTable.$inferInsert;
 export type PartnershipRequest = typeof partnershipRequestTable.$inferInsert;
 export type Booking = typeof bookingTable.$inferInsert;
+
 export type BookingDetails = Omit<
   Omit<Omit<Omit<typeof bookingTable.$inferInsert, "startDate">, "endDate">, "createdAt">,
   "updatedAt"
@@ -164,4 +165,10 @@ export type BookingDetails = Omit<
   endDate: string;
   createdAt: string;
   updatedAt: string;
+};
+export type PartnershipRequestDetails = Omit<
+  typeof partnershipRequestTable.$inferInsert,
+  "createdAt"
+> & {
+  createdAt: string;
 };
