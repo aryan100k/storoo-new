@@ -6,6 +6,7 @@ export const routes = {
   bookingThankYou: "/booking-thank-you",
   login: "/auth/login",
   signup: "/auth/signup",
+  becomeAPartner: "/become-a-partner",
 };
 
 export const adminRoutes = {

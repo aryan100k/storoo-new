@@ -12,8 +12,13 @@ import {
 import { BookNowDialog } from "@/components/book-storage-dialog";
 import { Menu } from "lucide-react";
 import { LoginLogoutBtn } from "./login-logout-btn";
+import { routes } from "@/lib/routes";
 
 const links = [
+  {
+    title: "Become a Partner",
+    href: routes.becomeAPartner,
+  },
   {
     title: "How It Works",
     href: "#how-it-works",
@@ -57,7 +62,9 @@ export const Navbar = () => {
         <SheetContent side="right" className="flex flex-col items-start">
           <SheetHeader>
             <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <SheetDescription className="sr-only">Use the links below to navigate</SheetDescription>
+            <SheetDescription className="sr-only">
+              Use the links below to navigate
+            </SheetDescription>
           </SheetHeader>
 
           {links.map((link) => (

@@ -29,7 +29,7 @@ export default function StorooLandingPage() {
                 variant="outline"
                 className="border-brand text-brand hover:bg-brand hover:text-white px-8 py-3 rounded-full text-lg"
               >
-                <Link href={routes.addListing}>List Your Space</Link>
+                <Link href={routes.becomeAPartner}>Become a Partner</Link>
               </Button>
             </div>
           </div>
