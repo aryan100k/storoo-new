@@ -10,6 +10,7 @@ import {
   Store,
   Info,
 } from "lucide-react";
+import { coffeeShopeImg, supermarketImg } from "@/assets/images/testimonials";
 
 export const benefits = [
   {
@@ -57,16 +58,18 @@ export const steps = [
 
 export const testimonials = [
   {
+    img: supermarketImg,
     name: "Rahul Sharma",
-    business: "City Center Storage",
+    business: "Vijetha Super Market",
     location: "Mumbai, MH",
     earnings: "25,000",
     story:
       "Partnering with Storoo has been a game-changer for my business. I'm utilizing space that was previously unused and seeing great returns!",
   },
   {
+    img: coffeeShopeImg,
     name: "Priya Patel",
-    business: "Cozy Corner Cafe",
+    business: "Coffee Shope",
     location: "Bangalore, KA",
     earnings: "18,500",
     story:

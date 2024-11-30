@@ -52,51 +52,6 @@ const BecomeAPartner = () => {
           </div>
         </section>
 
-        {/* Featured In Section */}
-        {/* <section className="py-12 bg-[#e8f0fe] overflow-hidden">
-          <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold text-center mb-8">Featured In</h2>
-            <div className="flex space-x-8 overflow-hidden">
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 1"
-                width={120}
-                height={50}
-              />
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 2"
-                width={120}
-                height={50}
-              />
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 3"
-                width={120}
-                height={50}
-              />
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 4"
-                width={120}
-                height={50}
-              />
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 5"
-                width={120}
-                height={50}
-              />
-              <Image
-                src="/placeholder.svg?height=50&width=120"
-                alt="Partner 6"
-                width={120}
-                height={50}
-              />
-            </div>
-          </div>
-        </section> */}
-
         {/* Benefits Grid */}
         <section className="py-20 bg-background">
           <div className="container mx-auto">
@@ -134,6 +89,7 @@ const BecomeAPartner = () => {
             <div className="flex flex-wrap justify-center gap-8">
               {testimonials.map((t) => (
                 <Testimonial
+                  image={t.img.src}
                   key={t.name}
                   name={t.name}
                   business={t.business}
@@ -211,7 +167,9 @@ const BecomeAPartner = () => {
 
       {/* Sticky "Apply Now" button */}
       <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8">
-        <Button className="bg-brand text-white hover:bg-blue-700 shadow-lg">Apply Now</Button>
+        <Button variant="brand" asChild>
+          <Link href="#apply-now">Apply Now</Link>
+        </Button>
       </div>
     </div>
   );
@@ -257,7 +215,7 @@ const Testimonial = (props: {
             alt={props.name}
             width={64}
             height={64}
-            className="rounded-full mr-4"
+            className="rounded-full mr-4 object-cover h-16 w-16"
           />
         ) : (
           <UserCircle2 className="w-16 h-16 bg-muted rounded-full text-muted-foreground mr-4" />

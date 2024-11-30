@@ -1,4 +1,4 @@
-import vijetha from "./vijetha-super-market.webp";
-import coffeeShope from "./coffee-shope.webp";
+import supermarketImg from "./vijetha-super-market.webp";
+import coffeeShopeImg from "./coffee-shope.webp";
 
-export { vijetha, coffeeShope };
+export { supermarketImg, coffeeShopeImg };
