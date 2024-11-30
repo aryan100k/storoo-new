@@ -1,7 +1,7 @@
 "use client";
 
 import { trpc } from "@/lib/trpc";
-import { BookOpen, Package, Users } from "lucide-react";
+import { BookOpen, Handshake, Package, Users } from "lucide-react";
 
 export const OverviewCards = () => {
   const { data: pendingCount, isLoading: pendingCountLoading } =
@@ -58,9 +58,9 @@ export const OverviewCards = () => {
       <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">
-            Pending Payment Requests
+            Pending Partnership Requests
           </span>
-          <Users className="h-4 w-4 text-muted-foreground" />
+          <Handshake className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="text-xl font-bold">
           {isLoading ? <span className="text-muted-foreground">...</span> : pendingRequestCount}
