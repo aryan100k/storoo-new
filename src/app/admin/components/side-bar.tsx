@@ -17,7 +17,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { adminRoutes } from "@/lib/routes";
-import { BookOpen, Home, Package, Users } from "lucide-react";
+import { BookOpen, Handshake, Home, Package, Users } from "lucide-react";
 import { LogoutBtn } from "./logout-btn";
 
 const navBarItems = [
@@ -30,6 +30,11 @@ const navBarItems = [
     title: "Booking Requests",
     href: adminRoutes.bookingRequests,
     icon: BookOpen,
+  },
+  {
+    title: "Partner Requests",
+    href: adminRoutes.partnerRequests,
+    icon: Handshake,
   },
   {
     title: "Partner Listings",

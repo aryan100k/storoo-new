@@ -5,13 +5,15 @@ import {
   getLatestCapacityUpdate,
   getLatestPartnerUpdate,
   getListingCountByStatus,
+  getPartnershipRequests,
   getStorageListings,
+  getTotalPartnershipRequests,
   updateStorageListingStatus,
 } from "../helpers/listing";
 import {
   deleteBooking,
   getBookings,
-  getBookingsTotalBookingsCount,
+  getTotalBookingsCount,
   getLatestBookingRequest,
   updateBookingStatus,
 } from "../helpers/booking";
@@ -96,7 +98,7 @@ export const adminRouter = router({
     )
     .query(async ({ input }) => {
       console.log(input);
-      return getBookingsTotalBookingsCount(input || {});
+      return getTotalBookingsCount(input || {});
     }),
   getBookings: adminProcedure
     .input(
@@ -129,4 +131,18 @@ export const adminRouter = router({
       status: "success",
     };
   }),
+
+  getTotalPartnershipRequests: adminProcedure.query(() => {
+    return getTotalPartnershipRequests();
+  }),
+  getPartnershipRequests: adminProcedure
+    .input(
+      z.object({
+        limit: z.number().optional(),
+        cursor: z.number().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      return getPartnershipRequests(input);
+    }),
 });

@@ -173,3 +173,28 @@ export const addPartnershipRequest = async (config: PartnerRequestSchema) => {
 
   return res.insertedId;
 };
+
+export const getTotalPartnershipRequests = async () => {
+  const query = db
+    .select({
+      count: count(partnershipRequestTable.id),
+    })
+    .from(partnershipRequestTable);
+
+  const [res] = await query;
+
+  return res.count || 0;
+};
+
+export const getPartnershipRequests = async (config: { limit?: number; cursor?: number }) => {
+  config.cursor = config.cursor || 0;
+  config.limit = config.limit || 5;
+
+  const requests = await db.query.partnershipRequestTable.findMany({
+    orderBy: (fields, { desc }) => [desc(fields.createdAt)],
+    limit: config.limit,
+    offset: config.cursor,
+  });
+
+  return requests;
+};

@@ -12,6 +12,7 @@ export const adminRoutes = {
   dashboard: "/admin/dashboard",
   bookingRequests: "/admin/booking-requests",
   storagePoints: "/admin/storage-points",
+  partnerRequests: "/admin/partner-requests",
   partnerListings: "/admin/partner-listings",
   partnerListingDetails: (id: string | number) => `/admin/partner-listings/${id}`,
 };

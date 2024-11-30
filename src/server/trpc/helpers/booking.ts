@@ -31,16 +31,13 @@ export const addNewBookingRequest = async (booking: BookingRequestSchema, userId
   return bookingId.insertedId;
 };
 
-export const getBookingsTotalBookingsCount = async (config: {
-  status?: Booking["status"] | null;
-}) => {
+export const getTotalBookingsCount = async (config: { status?: Booking["status"] | null }) => {
   const query = db
     .select({
       count: count(bookingTable.id),
     })
     .from(bookingTable);
 
-  console.log(config);
   if (config.status) {
     query.where(eq(bookingTable.status, config.status));
   }
