@@ -15,22 +15,22 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader2, Trash } from "lucide-react";
-import { BookingDetails } from "@/server/drizzle/schema";
+import { PartnershipRequestDetails } from "@/server/drizzle/schema";
 import { trpc } from "@/lib/trpc";
 import { queryClient } from "@/app/(public)/components/trpc-provider";
 import { showErrorToast } from "@/lib/api-errors";
 
-export const DeleteModal = (props: { booking: BookingDetails }) => {
+export const DeleteModal = (props: { request: PartnershipRequestDetails }) => {
   const [open, setOpen] = useState(false);
-  const { status, mutate } = trpc.deleteBooking.useMutation({
+  const { status, mutate } = trpc.deletePartnershipRequest.useMutation({
     onSuccess: () => {
       setOpen(false);
-      toast("Booking deleted successfully");
+      toast("Request deleted successfully");
       queryClient.refetchQueries({
-        queryKey: getQueryKey(trpc.getBookings),
+        queryKey: getQueryKey(trpc.getPartnershipRequests),
       });
       queryClient.refetchQueries({
-        queryKey: getQueryKey(trpc.getTotalBookingsCount),
+        queryKey: getQueryKey(trpc.getTotalPartnershipRequests),
       });
     },
     onError: (error) => {
@@ -39,6 +39,8 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
   });
 
   const loading = status === "pending";
+
+  if (!props.request.id) return null;
 
   return (
     <AlertDialog
@@ -57,8 +59,8 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the booking by{" "}
-            {props.booking.name}.
+            This action cannot be undone. This will permanently delete the request by{" "}
+            {props.request.businessName}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -71,7 +73,7 @@ export const DeleteModal = (props: { booking: BookingDetails }) => {
               disabled={loading}
               onClick={(e) => {
                 e.preventDefault();
-                mutate(props.booking.id!);
+                mutate(props.request.id!);
               }}
             >
               Delete

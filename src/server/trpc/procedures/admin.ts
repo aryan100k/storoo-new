@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { procedure, router } from "..";
 import {
+  deletePartnershipRequest,
   deleteStorageListing,
   getLatestCapacityUpdate,
   getLatestPartnerUpdate,
@@ -145,4 +146,10 @@ export const adminRouter = router({
     .query(async ({ input }) => {
       return getPartnershipRequests(input);
     }),
+  deletePartnershipRequest: adminProcedure.input(z.number()).mutation(async ({ input }) => {
+    await deletePartnershipRequest(input);
+    return {
+      status: "success",
+    };
+  }),
 });

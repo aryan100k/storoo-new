@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { PartnershipRequestDetails } from "@/server/drizzle/schema";
+import { DeleteModal } from "./delete-modal";
 
 export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   {
@@ -14,7 +15,7 @@ export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   },
   {
     header: "Name",
-    accessorKey: "contactName",
+    accessorKey: "contactPerson",
   },
   {
     header: "Contact",
@@ -62,5 +63,10 @@ export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   {
     header: "Created At",
     accessorFn: (data) => (data.createdAt ? format(data.createdAt, "dd/MM/yyyy") : ""),
+  },
+  {
+    id: "actions",
+    header: "",
+    cell: ({ row }) => <DeleteModal request={row.original} />,
   },
 ];

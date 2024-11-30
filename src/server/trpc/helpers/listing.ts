@@ -198,3 +198,7 @@ export const getPartnershipRequests = async (config: { limit?: number; cursor?: 
 
   return requests;
 };
+
+export const deletePartnershipRequest = (id: number) => {
+  return db.delete(partnershipRequestTable).where(eq(partnershipRequestTable.id, id));
+};

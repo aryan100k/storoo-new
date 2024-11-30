@@ -32,6 +32,9 @@ export const UpdateStatusDropdown = (props: {
       queryClient.refetchQueries({
         queryKey: getQueryKey(trpc.getListingsByStatus),
       });
+      queryClient.refetchQueries({
+        queryKey: getQueryKey(trpc.getListingCountByStatus),
+      });
     },
     onError: (error) => {
       showErrorToast(error.message);

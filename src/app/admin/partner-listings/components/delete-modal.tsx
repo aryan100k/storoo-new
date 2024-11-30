@@ -29,6 +29,9 @@ export const DeleteModal = (props: { listing: StorageDetails }) => {
       queryClient.refetchQueries({
         queryKey: getQueryKey(trpc.getListingsByStatus),
       });
+      queryClient.refetchQueries({
+        queryKey: getQueryKey(trpc.getListingCountByStatus),
+      });
     },
     onError: (error) => {
       showErrorToast(error.message);

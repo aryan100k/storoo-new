@@ -26,6 +26,9 @@ export const UpdateStatusDropdown = (props: { bookingId: number; status?: string
         queryClient.refetchQueries({
           queryKey: getQueryKey(trpc.getBookings),
         });
+        queryClient.refetchQueries({
+          queryKey: getQueryKey(trpc.getTotalBookingsCount),
+        });
       },
       onError: (error) => {
         showErrorToast(error.message);
