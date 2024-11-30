@@ -149,6 +149,9 @@ export const partnershipRequestTable = pgTable("partnership_request", {
   businessType: text("business_type").notNull(),
   storageSpace: integer("storage_space").notNull(),
   currentMonthlyVisitors: integer("current_monthly_visitors").notNull(),
+  status: text({ enum: ["pending", "approved", "rejected"] })
+    .default("pending")
+    .notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

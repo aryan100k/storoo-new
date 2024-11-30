@@ -10,11 +10,19 @@ export const OverviewCards = () => {
     trpc.getListingCountByStatus.useQuery({ status: "approved" });
   const { data: totalBookingCount, isLoading: totalBookingCountLoading } =
     trpc.getTotalBookingsCount.useQuery();
+  const { data: pendingRequestCount, isLoading: pendingRequestCountLoading } =
+    trpc.getTotalPartnershipRequestsByRequest.useQuery({
+      status: "pending",
+    });
 
-  const isLoading = pendingCountLoading || approvedCountLoading || totalBookingCountLoading;
+  const isLoading =
+    pendingCountLoading ||
+    approvedCountLoading ||
+    totalBookingCountLoading ||
+    pendingRequestCountLoading;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">Total Booking Requests</span>
@@ -38,12 +46,24 @@ export const OverviewCards = () => {
       <div className="rounded-md border p-5 bg-background">
         <div className="flex flex-row items-center justify-between space-y-0 pb-2">
           <span className="text-xs text-muted-foreground font-medium">
-            Pending Partner Applications
+            Pending Listing Requests
           </span>
           <Users className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="text-xl font-bold">
           {isLoading ? <span className="text-muted-foreground">...</span> : pendingCount}
+        </div>
+      </div>
+
+      <div className="rounded-md border p-5 bg-background">
+        <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <span className="text-xs text-muted-foreground font-medium">
+            Pending Payment Requests
+          </span>
+          <Users className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div className="text-xl font-bold">
+          {isLoading ? <span className="text-muted-foreground">...</span> : pendingRequestCount}
         </div>
       </div>
     </div>

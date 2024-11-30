@@ -8,7 +8,7 @@ import {
   getListingCountByStatus,
   getPartnershipRequests,
   getStorageListings,
-  getTotalPartnershipRequests,
+  getTotalPartnershipRequestsByRequest,
   updateStorageListingStatus,
 } from "../helpers/listing";
 import {
@@ -21,6 +21,7 @@ import {
 import { z } from "zod";
 import { bookingStatusSchema } from "@/lib/zod/booking";
 import { listingStatusSchema } from "@/lib/zod/listing";
+import { statusSchema } from "@/lib/zod/partner-request";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
@@ -133,9 +134,15 @@ export const adminRouter = router({
     };
   }),
 
-  getTotalPartnershipRequests: adminProcedure.query(() => {
-    return getTotalPartnershipRequests();
-  }),
+  getTotalPartnershipRequestsByRequest: adminProcedure
+    .input(
+      z.object({
+        status: statusSchema.optional(),
+      })
+    )
+    .query(({ input }) => {
+      return getTotalPartnershipRequestsByRequest(input);
+    }),
   getPartnershipRequests: adminProcedure
     .input(
       z.object({

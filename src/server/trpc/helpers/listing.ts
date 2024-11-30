@@ -5,6 +5,7 @@ import { PartnerRequestSchema } from "@/lib/zod/partner-request";
 import { db } from "@/server/drizzle/db";
 import {
   capacityTable,
+  PartnershipRequest,
   partnershipRequestTable,
   StorageDetails,
   storageDetailsTable,
@@ -166,6 +167,7 @@ export const addPartnershipRequest = async (config: PartnerRequestSchema) => {
       storageSpace: config.storageSpace,
       currentMonthlyVisitors: config.currentMonthlyVisitors,
       createdAt: new Date(),
+      status: "pending",
     })
     .returning({
       insertedId: partnershipRequestTable.id,
@@ -174,12 +176,18 @@ export const addPartnershipRequest = async (config: PartnerRequestSchema) => {
   return res.insertedId;
 };
 
-export const getTotalPartnershipRequests = async () => {
+export const getTotalPartnershipRequestsByRequest = async (config: {
+  status?: PartnershipRequest["status"];
+}) => {
   const query = db
     .select({
       count: count(partnershipRequestTable.id),
     })
     .from(partnershipRequestTable);
+
+  if (config.status) {
+    query.where(eq(partnershipRequestTable.status, config.status));
+  }
 
   const [res] = await query;
 

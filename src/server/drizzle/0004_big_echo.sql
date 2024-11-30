@@ -1,0 +1,1 @@
+ALTER TABLE "partnership_request" ADD COLUMN "status" text DEFAULT 'pending' NOT NULL;

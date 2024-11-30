@@ -12,7 +12,7 @@ const partnersPerPage = 8;
 
 const PartnerRequestsPage = () => {
   const { isLoading: isTotalLoading, data: totalRequests = 0 } =
-    trpc.getTotalPartnershipRequests.useQuery();
+    trpc.getTotalPartnershipRequestsByRequest.useQuery({});
   const { isLoading, data, fetchNextPage } = trpc.getPartnershipRequests.useInfiniteQuery(
     {
       limit: partnersPerPage,

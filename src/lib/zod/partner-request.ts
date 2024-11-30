@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { phoneSchema } from "./auth";
 
+export const statusSchema = z.enum(["pending", "approved", "rejected"]);
+
 export const partnerRequestSchema = z.object({
   businessName: z.string().min(2, { message: "Business name must be at least 2 characters long" }),
   contactPerson: z
