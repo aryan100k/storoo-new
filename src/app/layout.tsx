@@ -7,6 +7,7 @@ import { TRPCProvider } from "./(public)/components/trpc-provider";
 
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { GlobalScript } from "./(public)/components/global-script";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,6 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="icon" href="/storoo-logo-white.svg" />
+
+        <GlobalScript />
       </head>
 
       <body className={cn("bg-background font-sans text-primary antialiased", inter.variable)}>
