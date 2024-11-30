@@ -1,14 +1,17 @@
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, LucideIcon, UserCircle2 } from "lucide-react";
 import { PartnerRequestForm } from "./components/partner-request-form";
+
 import {
   benefits,
   businessTypes,
@@ -39,11 +42,60 @@ const BecomeAPartner = () => {
               </div>
               <div className="bg-background text-brand px-4 py-2 rounded-full">Zero Setup Cost</div>
             </div>
-            <Button className="bg-background text-brand hover:bg-[#e8f0fe] text-lg px-8 py-3 rounded-full">
-              Become a Partner
+
+            <Button
+              asChild
+              className="bg-background text-brand hover:bg-[#e8f0fe] text-lg px-8 py-3 rounded-full"
+            >
+              <Link href="#apply-now">Become a Partner</Link>
             </Button>
           </div>
         </section>
+
+        {/* Featured In Section */}
+        {/* <section className="py-12 bg-[#e8f0fe] overflow-hidden">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl font-bold text-center mb-8">Featured In</h2>
+            <div className="flex space-x-8 overflow-hidden">
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 1"
+                width={120}
+                height={50}
+              />
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 2"
+                width={120}
+                height={50}
+              />
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 3"
+                width={120}
+                height={50}
+              />
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 4"
+                width={120}
+                height={50}
+              />
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 5"
+                width={120}
+                height={50}
+              />
+              <Image
+                src="/placeholder.svg?height=50&width=120"
+                alt="Partner 6"
+                width={120}
+                height={50}
+              />
+            </div>
+          </div>
+        </section> */}
 
         {/* Benefits Grid */}
         <section className="py-20 px-4 bg-background">
@@ -134,7 +186,7 @@ const BecomeAPartner = () => {
         </section>
 
         {/* Application Form */}
-        <section className="py-20 px-4 bg-background">
+        <section className="py-20 px-4 bg-background" id="apply-now">
           <div className="container mx-auto max-w-2xl">
             <h2 className="text-2xl font-semibold text-center mb-12">Become a Storoo Partner</h2>
 
