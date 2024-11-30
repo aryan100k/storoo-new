@@ -1,5 +1,5 @@
 import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocompleteService";
-import { AutoCompleteInput } from "@/components/auto-complete-input";
+import { AddressAutoCompleteInput } from "@/components/address-auto-complete-input";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ export const AddressSelectModal = (props: {
           <DialogDescription>Start typing to search for an address</DialogDescription>
         </DialogHeader>
 
-        <AutoCompleteInput
+        <AddressAutoCompleteInput
           onSelect={async (e) => {
             placesService?.getDetails({ placeId: e.place_id }, (place) => {
               if (place) {

@@ -28,6 +28,7 @@ import { trpc } from "@/lib/trpc";
 import { routes } from "@/lib/routes";
 import { showErrorToast } from "@/lib/api-errors";
 import { partnerRequestSchema, PartnerRequestSchema } from "@/lib/zod/partner-request";
+import { AddressAutoCompleteInput } from "@/components/address-auto-complete-input";
 
 export const PartnerRequestForm = () => {
   const router = useRouter();
@@ -119,7 +120,11 @@ export const PartnerRequestForm = () => {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <AddressAutoCompleteInput
+                  onSelect={(v) => {
+                    field.onChange(v.description);
+                  }}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

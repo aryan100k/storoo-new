@@ -6,9 +6,8 @@ import usePlacesService from "react-google-autocomplete/lib/usePlacesAutocomplet
 import { Input } from "./ui/input";
 import { googleMapAPIKey } from "@/lib/constants";
 import { XIcon } from "lucide-react";
-import { truncateText } from "@/lib/utils";
 
-export const AutoCompleteInput = (props: {
+export const AddressAutoCompleteInput = (props: {
   placeholder?: string;
   onSelect: (prediction: google.maps.places.AutocompletePrediction) => void;
 }) => {
@@ -43,8 +42,8 @@ export const AutoCompleteInput = (props: {
   return (
     <div ref={containerRef} className="relative w-full">
       {selectedAddress ? (
-        <div className="flex items-center truncate  overflow-auto justify-between h-9 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors md:text-sm w-full">
-          {truncateText(selectedAddress, 45)}
+        <div className="flex items-center overflow-auto justify-between h-9 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors md:text-sm w-full">
+          <span className="truncate">{selectedAddress}</span>
           <button
             type="button"
             onClick={() => {
@@ -66,7 +65,7 @@ export const AutoCompleteInput = (props: {
         />
       )}
 
-      {state && placePredictions.length > 0 && (
+      {!selectedAddress && state && placePredictions.length > 0 && (
         <div className="absolute top-10 border rounded-md shadow-sm bg-background left-0 right-0 max-h-52 overflow-auto scroll-thin text-sm flex flex-col">
           {placePredictions.map((prediction) => (
             <button

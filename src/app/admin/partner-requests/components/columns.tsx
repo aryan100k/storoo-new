@@ -38,9 +38,6 @@ export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   {
     header: "Address",
     accessorKey: "location",
-    cell: ({ row }) => {
-      return <span className="whitespace-nowrap capitalize">{row.original.location}</span>;
-    },
   },
   {
     header: "Type",
