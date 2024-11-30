@@ -3,7 +3,11 @@ import { TRPCError } from "@trpc/server";
 
 import { router, procedure } from "@/server/trpc";
 import { login, signUp } from "@/server/trpc/helpers/auth";
-import { addListingRequest, getAvailableListings } from "@/server/trpc/helpers/listing";
+import {
+  addListingRequest,
+  addPartnershipRequest,
+  getAvailableListings,
+} from "@/server/trpc/helpers/listing";
 import { addNewBookingRequest } from "@/server/trpc/helpers/booking";
 
 import { lucia } from "@/server/lucia";
@@ -101,8 +105,8 @@ export const publicRouter = router({
     };
   }),
 
-  addPartnershipRequest: procedure.input(partnerRequestSchema).mutation(async ({ input, ctx }) => {
-    console.log(input);
+  addPartnershipRequest: procedure.input(partnerRequestSchema).mutation(async ({ input }) => {
+    await addPartnershipRequest(input);
 
     return {
       status: "success",

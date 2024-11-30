@@ -22,6 +22,13 @@
       "when": 1732565899034,
       "tag": "0002_low_scarlet_witch",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1732968933245,
+      "tag": "0003_equal_agent_brand",
+      "breakpoints": true
     }
   ]
 }

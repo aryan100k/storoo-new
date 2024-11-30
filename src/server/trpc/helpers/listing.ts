@@ -1,8 +1,14 @@
 import { apiErrors } from "@/lib/api-errors";
 import { getGeocodeFromPlaceId } from "@/lib/google-places";
 import { ListingSchema } from "@/lib/zod/listing";
+import { PartnerRequestSchema } from "@/lib/zod/partner-request";
 import { db } from "@/server/drizzle/db";
-import { capacityTable, StorageDetails, storageDetailsTable } from "@/server/drizzle/schema";
+import {
+  capacityTable,
+  partnershipRequestTable,
+  StorageDetails,
+  storageDetailsTable,
+} from "@/server/drizzle/schema";
 import { TRPCError } from "@trpc/server";
 import { count, eq } from "drizzle-orm";
 
@@ -145,4 +151,25 @@ export const getListingDetails = async (id: number) => {
       capacity: true,
     },
   });
+};
+
+export const addPartnershipRequest = async (config: PartnerRequestSchema) => {
+  const [res] = await db
+    .insert(partnershipRequestTable)
+    .values({
+      businessName: config.businessName,
+      contactPerson: config.contactPerson,
+      phoneNumber: config.phoneNumber,
+      email: config.email,
+      location: config.location,
+      businessType: config.businessType,
+      storageSpace: config.storageSpace,
+      currentMonthlyVisitors: config.currentMonthlyVisitors,
+      createdAt: new Date(),
+    })
+    .returning({
+      insertedId: partnershipRequestTable.id,
+    });
+
+  return res.insertedId;
 };

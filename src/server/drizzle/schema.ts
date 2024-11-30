@@ -139,6 +139,19 @@ export const bookingTable = pgTable("booking", {
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
 
+export const partnershipRequestTable = pgTable("partnership_request", {
+  id: serial().primaryKey().notNull(),
+  businessName: text("business_name").notNull(),
+  contactPerson: text("contact_person").notNull(),
+  phoneNumber: text("phone_number").notNull(),
+  email: text().notNull(),
+  location: text().notNull(),
+  businessType: text("business_type").notNull(),
+  storageSpace: integer("storage_space").notNull(),
+  currentMonthlyVisitors: integer("current_monthly_visitors").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
 export type StorageDetails = typeof storageDetailsTable.$inferInsert;
 export type User = typeof userTable.$inferInsert;
 export type Booking = typeof bookingTable.$inferInsert;
