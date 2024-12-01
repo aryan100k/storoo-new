@@ -6,6 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { PartnershipRequestDetails } from "@/server/drizzle/schema";
 import { DeleteModal } from "./delete-modal";
+import { UpdateStatusDropdown } from "./update-status-dropdown";
 
 export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
   {
@@ -51,10 +52,23 @@ export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
     },
   },
   {
-    header: "Type",
+    header: "Storage Space",
     accessorKey: "storageSpace",
     cell: ({ row }) => {
       return <span className="whitespace-nowrap capitalize">{row.original.storageSpace}</span>;
+    },
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    cell: ({ row }) => {
+      if (!row.original.id) {
+        return;
+      }
+
+      return (
+        <UpdateStatusDropdown requestId={row.original.id} status={row.original.status} />
+      );
     },
   },
   {

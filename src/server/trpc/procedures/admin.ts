@@ -9,6 +9,7 @@ import {
   getPartnershipRequests,
   getStorageListings,
   getTotalPartnershipRequestsByRequest,
+  updatePartnerRequestStatus,
   updateStorageListingStatus,
 } from "../helpers/listing";
 import {
@@ -21,7 +22,7 @@ import {
 import { z } from "zod";
 import { bookingStatusSchema } from "@/lib/zod/booking";
 import { listingStatusSchema } from "@/lib/zod/listing";
-import { statusSchema } from "@/lib/zod/partner-request";
+import { partnerRequestStatusSchema } from "@/lib/zod/partner-request";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
@@ -74,12 +75,14 @@ export const adminRouter = router({
     .query(async ({ input }) => {
       return getStorageListings(input);
     }),
-  deleteStorageListing: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deleteStorageListing(input);
-    return {
-      status: "success",
-    };
-  }),
+  deleteStorageListing: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deleteStorageListing(input);
+      return {
+        status: "success",
+      };
+    }),
   updateListingStatus: adminProcedure
     .input(z.object({ id: z.number(), status: listingStatusSchema }))
     .mutation(async ({ input }) => {
@@ -127,36 +130,54 @@ export const adminRouter = router({
         status: "success",
       };
     }),
-  deleteBooking: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deleteBooking(input);
-    return {
-      status: "success",
-    };
-  }),
+  deleteBooking: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deleteBooking(input);
+      return {
+        status: "success",
+      };
+    }),
 
   getTotalPartnershipRequestsByRequest: adminProcedure
     .input(
       z.object({
-        status: statusSchema.optional(),
+        status: partnerRequestStatusSchema.optional(),
       })
     )
     .query(({ input }) => {
       return getTotalPartnershipRequestsByRequest(input);
     }),
+
   getPartnershipRequests: adminProcedure
     .input(
       z.object({
         limit: z.number().optional(),
         cursor: z.number().optional(),
+        status: partnerRequestStatusSchema.optional(),
       })
     )
     .query(async ({ input }) => {
       return getPartnershipRequests(input);
     }),
-  deletePartnershipRequest: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deletePartnershipRequest(input);
-    return {
-      status: "success",
-    };
-  }),
+
+  updatePartnerRequestStatus: adminProcedure
+    .input(z.object({ id: z.number(), status: partnerRequestStatusSchema }))
+    .mutation(async ({ input }) => {
+      await updatePartnerRequestStatus(input.id, input.status);
+
+      return {
+        status: "success",
+      };
+    }),
+  
+
+  deletePartnershipRequest: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deletePartnershipRequest(input);
+      return {
+        status: "success",
+      };
+    }),
 });
