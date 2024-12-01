@@ -9,6 +9,7 @@ import {
   getPartnershipRequests,
   getStorageListings,
   getTotalPartnershipRequestsByRequest,
+  updatePartnerRequestStatus,
   updateStorageListingStatus,
 } from "../helpers/listing";
 import {
@@ -74,12 +75,14 @@ export const adminRouter = router({
     .query(async ({ input }) => {
       return getStorageListings(input);
     }),
-  deleteStorageListing: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deleteStorageListing(input);
-    return {
-      status: "success",
-    };
-  }),
+  deleteStorageListing: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deleteStorageListing(input);
+      return {
+        status: "success",
+      };
+    }),
   updateListingStatus: adminProcedure
     .input(z.object({ id: z.number(), status: listingStatusSchema }))
     .mutation(async ({ input }) => {
@@ -127,12 +130,14 @@ export const adminRouter = router({
         status: "success",
       };
     }),
-  deleteBooking: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deleteBooking(input);
-    return {
-      status: "success",
-    };
-  }),
+  deleteBooking: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deleteBooking(input);
+      return {
+        status: "success",
+      };
+    }),
 
   getTotalPartnershipRequestsByRequest: adminProcedure
     .input(
@@ -143,6 +148,7 @@ export const adminRouter = router({
     .query(({ input }) => {
       return getTotalPartnershipRequestsByRequest(input);
     }),
+
   getPartnershipRequests: adminProcedure
     .input(
       z.object({
@@ -154,10 +160,24 @@ export const adminRouter = router({
     .query(async ({ input }) => {
       return getPartnershipRequests(input);
     }),
-  deletePartnershipRequest: adminProcedure.input(z.number()).mutation(async ({ input }) => {
-    await deletePartnershipRequest(input);
-    return {
-      status: "success",
-    };
-  }),
+
+  updatePartnerRequestStatus: adminProcedure
+    .input(z.object({ id: z.number(), status: partnerRequestStatusSchema }))
+    .mutation(async ({ input }) => {
+      await updatePartnerRequestStatus(input.id, input.status);
+
+      return {
+        status: "success",
+      };
+    }),
+  
+
+  deletePartnershipRequest: adminProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      await deletePartnershipRequest(input);
+      return {
+        status: "success",
+      };
+    }),
 });

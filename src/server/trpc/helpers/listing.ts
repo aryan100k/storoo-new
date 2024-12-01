@@ -111,6 +111,16 @@ export const updateStorageListingStatus = (
     .where(eq(storageDetailsTable.id, id));
 };
 
+export const updatePartnerRequestStatus = (
+  id: number,
+  status: PartnershipRequest["status"]
+) => {
+  return db
+    .update(partnershipRequestTable)
+    .set({ status: status })
+    .where(eq(partnershipRequestTable.id, id));
+};
+
 export const getListingCountByStatus = (status: StorageDetails["approvalStatus"]) => {
   const query = db
     .select({
