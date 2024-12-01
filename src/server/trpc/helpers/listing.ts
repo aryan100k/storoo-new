@@ -202,7 +202,7 @@ export const getPartnershipRequests = async (config: {
   config.cursor = config.cursor || 0;
   config.limit = config.limit || 5;
 
-  const requests = db.query.partnershipRequestTable.findMany({
+  const requests = await db.query.partnershipRequestTable.findMany({
     orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     limit: config.limit,
     offset: config.cursor,
