@@ -54,7 +54,7 @@ export const requestsColumns: ColumnDef<PartnershipRequestDetails>[] = [
     },
   },
   {
-    header: "Type",
+    header: "Storage Space",
     accessorKey: "storageSpace",
     cell: ({ row }) => {
       return <span className="whitespace-nowrap capitalize">{row.original.storageSpace}</span>;
