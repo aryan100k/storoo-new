@@ -21,7 +21,7 @@ import {
 import { z } from "zod";
 import { bookingStatusSchema } from "@/lib/zod/booking";
 import { listingStatusSchema } from "@/lib/zod/listing";
-import { statusSchema } from "@/lib/zod/partner-request";
+import { partnerRequestStatusSchema } from "@/lib/zod/partner-request";
 
 export const adminProcedure = procedure.use(async (opts) => {
   const { ctx } = opts;
@@ -137,7 +137,7 @@ export const adminRouter = router({
   getTotalPartnershipRequestsByRequest: adminProcedure
     .input(
       z.object({
-        status: statusSchema.optional(),
+        status: partnerRequestStatusSchema.optional(),
       })
     )
     .query(({ input }) => {
@@ -148,6 +148,7 @@ export const adminRouter = router({
       z.object({
         limit: z.number().optional(),
         cursor: z.number().optional(),
+        status: partnerRequestStatusSchema.optional(),
       })
     )
     .query(async ({ input }) => {

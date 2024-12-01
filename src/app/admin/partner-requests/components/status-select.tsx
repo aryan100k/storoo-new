@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useURLParams } from "@/hooks/use-url-params";
-import { bookingStatusSchema } from "@/lib/zod/booking";
+import { partnerRequestStatusSchema } from "@/lib/zod/partner-request";
 
 export const statusParamKey = "status";
 
@@ -25,7 +25,7 @@ export const StatusSelect = () => {
         <SelectItem value="all">All Status</SelectItem>
         <SelectItem value="approved">Approved</SelectItem>
         <SelectItem value="rejected">Rejected</SelectItem>
-        <SelectItem value="completed">Completed</SelectItem>
+        <SelectItem value="pending">Pending</SelectItem>
       </SelectContent>
     </Select>
   );
@@ -36,7 +36,7 @@ export const useStatus = () => {
 
   const selectedStatusParam = searchParams.get(statusParamKey);
   const selectedStatus = useMemo(() => {
-    const res = bookingStatusSchema.safeParse(selectedStatusParam);
+    const res = partnerRequestStatusSchema.safeParse(selectedStatusParam);
     return res.success ? res.data : undefined;
   }, [selectedStatusParam]);
 

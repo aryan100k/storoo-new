@@ -194,14 +194,19 @@ export const getTotalPartnershipRequestsByRequest = async (config: {
   return res.count || 0;
 };
 
-export const getPartnershipRequests = async (config: { limit?: number; cursor?: number }) => {
+export const getPartnershipRequests = async (config: {
+  limit?: number;
+  cursor?: number;
+  status?: PartnershipRequest["status"];
+}) => {
   config.cursor = config.cursor || 0;
   config.limit = config.limit || 5;
 
-  const requests = await db.query.partnershipRequestTable.findMany({
+  const requests = db.query.partnershipRequestTable.findMany({
     orderBy: (fields, { desc }) => [desc(fields.createdAt)],
     limit: config.limit,
     offset: config.cursor,
+    where: (table, { eq }) => (config.status ? eq(table.status, config.status) : undefined),
   });
 
   return requests;

@@ -155,7 +155,7 @@ const BecomeAPartner = () => {
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center items-center gap-8">
               {trustMarkers.map((t) => (
-                <div className="flex items-center space-x-2">
+                <div id={t.text} className="flex items-center space-x-2">
                   <t.icon className="w-6 h-6 text-brand" />
                   <span>{t.text}</span>
                 </div>

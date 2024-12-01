@@ -16,17 +16,16 @@ const PartnerRequestsPage = () => {
 
   const { isLoading: isTotalLoading, data: totalRequests = 0 } =
     trpc.getTotalPartnershipRequestsByRequest.useQuery({});
-  const { isLoading, data, fetchNextPage } =
-    trpc.getPartnershipRequests.useInfiniteQuery(
-      {
-        limit: partnersPerPage,
-        // status: selectedStatus,
-      },
-      {
-        initialCursor: 0,
-        getNextPageParam: (_, pages) => pages.flatMap((page) => page).length,
-      }
-    );
+  const { isLoading, data, fetchNextPage } = trpc.getPartnershipRequests.useInfiniteQuery(
+    {
+      limit: partnersPerPage,
+      status: selectedStatus,
+    },
+    {
+      initialCursor: 0,
+      getNextPageParam: (_, pages) => pages.flatMap((page) => page).length,
+    }
+  );
 
   const requests = data?.pages.flatMap((page) => page) ?? [];
   const hasMore = data?.pages.length === 0 || requests.length < totalRequests;
@@ -47,11 +46,7 @@ const PartnerRequestsPage = () => {
         <StatusSelect />
       </div>
 
-      <DataTable
-        columns={requestsColumns}
-        data={requests}
-        isLoading={isLoading}
-      />
+      <DataTable columns={requestsColumns} data={requests} isLoading={isLoading} />
 
       <div className="flex justify-end mt-2 gap-2">
         {!isTotalLoading && (
