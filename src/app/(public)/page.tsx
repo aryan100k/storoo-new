@@ -47,8 +47,9 @@ export default function StorooLandingPage() {
                 },
                 {
                   icon: Clock,
-                  title: "Drop off your bags",
-                  description: "Securely store your luggage",
+                  title: "Pickup and Drop-off",
+                  description:
+                    "We will pick you up from your location and drop you off at your location.",
                 },
                 {
                   icon: ThumbsUp,
@@ -96,7 +97,7 @@ export default function StorooLandingPage() {
               <div className="bg-brand text-white p-6 text-center">
                 <h3 className="text-2xl font-semibold mb-2">Simple, Transparent Pricing</h3>
                 <p className="text-4xl font-bold">
-                  ₹399<span className="text-xl">/day</span>
+                  ₹499<span className="text-xl">/day</span>
                 </p>
               </div>
               <div className="p-6">
